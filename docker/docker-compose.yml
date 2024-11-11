@@ -15,7 +15,7 @@ services:
             context: .
             dockerfile: php.dockerfile
         volumes:
-            - ../:/var/www
+            - ../:/var/www:cached
         depends_on:
             - mysql
             - redis
@@ -39,6 +39,7 @@ services:
         image: composer:latest
         volumes:
             - .:/app
+            # - ../:/app
         command: composer install --ignore-platform-reqs
     phpmyadmin:
         image: phpmyadmin/phpmyadmin:latest
