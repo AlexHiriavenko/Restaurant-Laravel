@@ -38,8 +38,8 @@ services:
     composer:
         image: composer:latest
         volumes:
-            - .:/app
-            # - ../:/app
+            # - .:/app
+            - ../:/app
         command: composer install --ignore-platform-reqs
     phpmyadmin:
         image: phpmyadmin/phpmyadmin:latest
