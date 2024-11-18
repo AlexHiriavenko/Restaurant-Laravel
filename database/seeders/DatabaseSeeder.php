@@ -10,13 +10,18 @@ class DatabaseSeeder extends Seeder
     /**
      * Seed the application's database.
      */
-    public function run(): void
+    public function run()
     {
-        // \App\Models\User::factory(10)->create();
-
-        // \App\Models\User::factory()->create([
-        //     'name' => 'Test User',
-        //     'email' => 'test@example.com',
-        // ]);
+        $this->call([
+            RoleSeeder::class,             // Сначала создаются роли
+            PermissionSeeder::class,      // Затем создаются разрешения
+            RolePermissionSeeder::class,  // Привязываются роли и разрешения
+            UserSeeder::class,            // Затем создаются пользователи с ролями
+            CategorySeeder::class,        // После этого создаются категории
+            ModifierSeeder::class,        // Затем модификаторы
+            TableSeeder::class,           // Потом столики
+            // DishSeeder::class,            // Дальше блюда
+            // DishModifierSeeder::class,    // Связь блюд с модификаторами
+        ]);
     }
 }
