@@ -8,5 +8,6 @@
 </head>
 <body>
   <h1>Admin Panel</h1>
+  <img src="{{ asset('images/client.png') }}" alt="Public Image">
 </body>
 </html>
