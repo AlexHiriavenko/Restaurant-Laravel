@@ -9,5 +9,6 @@
 <body>
   <h1>Admin Panel</h1>
   <img src="{{ asset('images/client.png') }}" alt="Public Image">
+  <img src="{{ asset('storage/imgs/avatars/client.png') }}" alt="Avatar">
 </body>
 </html>

@@ -19,7 +19,7 @@ class UserSeeder extends Seeder
             'name' => 'admin',
             'email' => 'admin@admin.com',
             'password' => Hash::make('admin'),
-            'avatar' => 'avatars/admin.jpg',
+            'avatar' => 'imgs/avatars/admin.jpg',
             'role_id' => $adminRole->id, // Привязка к роли
         ]);
 
@@ -27,7 +27,7 @@ class UserSeeder extends Seeder
             'name' => 'manager',
             'email' => 'manager@manager.com',
             'password' => Hash::make('manager'),
-            'avatar' => 'avatars/manager.jpg',
+            'avatar' => 'imgs/avatars/manager.jpg',
             'role_id' => $managerRole->id, // Привязка к роли
         ]);
 
@@ -35,7 +35,7 @@ class UserSeeder extends Seeder
             'name' => 'client',
             'email' => 'client@client.com',
             'password' => Hash::make('client'),
-            'avatar' => 'avatars/client.jpg',
+            'avatar' => 'imgs/avatars/client.jpg',
             'role_id' => $clientRole->id, // Привязка к роли
         ]);
     }
