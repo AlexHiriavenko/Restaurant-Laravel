@@ -9,14 +9,14 @@ class ModifierSeeder extends Seeder
 {
     public function run()
     {
-        // Создаём модификаторы через модель Modifier
-        Modifier::create(['name' => 'Соль']);
-        Modifier::create(['name' => 'Перец']);
-        Modifier::create(['name' => 'Хлеб']);
-        Modifier::create(['name' => 'Сахар']);
-        Modifier::create(['name' => 'Лимон']);
-        Modifier::create(['name' => 'Мёд']);
-        Modifier::create(['name' => 'Шоколадная крошка']);
-        Modifier::create(['name' => 'Сгущённое молоко']);
+        // Создаём модификаторы через модель Modifier с ценами
+        Modifier::create(['name' => 'Соль', 'price' => 0]);
+        Modifier::create(['name' => 'Перец', 'price' => 0]);
+        Modifier::create(['name' => 'Хлеб', 'price' => 6]);
+        Modifier::create(['name' => 'Сахар', 'price' => 0]);
+        Modifier::create(['name' => 'Лимон', 'price' => 4]);
+        Modifier::create(['name' => 'Мёд', 'price' => 10]);
+        Modifier::create(['name' => 'Шоколадная крошка', 'price' => 6]);
+        Modifier::create(['name' => 'Сгущённое молоко', 'price' => 8]);
     }
 }

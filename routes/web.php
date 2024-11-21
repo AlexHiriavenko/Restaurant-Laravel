@@ -2,6 +2,7 @@
 
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\UserController;
+use App\Models\Dish;
 
 /*
 |--------------------------------------------------------------------------
@@ -23,3 +24,15 @@ Route::get('/admin', function () {
 });
 
 Route::get('/users', [UserController::class, 'index']);
+
+Route::get('/dishes', function () {
+    $dishes = Dish::with(['category', 'modifiers'])->get();
+
+    foreach ($dishes as $dish) {
+        echo "- {$dish->name}: {$dish->category->name}<br>";
+        foreach ($dish->modifiers as $modifier) {
+            echo "&nbsp;&nbsp;&nbsp;&nbsp;- {$modifier->name}<br>";
+        }
+        echo "<br>";
+    }
+});

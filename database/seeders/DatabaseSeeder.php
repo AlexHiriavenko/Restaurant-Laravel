@@ -20,8 +20,8 @@ class DatabaseSeeder extends Seeder
             CategorySeeder::class,        // После этого создаются категории
             ModifierSeeder::class,        // Затем модификаторы
             TableSeeder::class,           // Потом столики
-            // DishSeeder::class,            // Дальше блюда
-            // DishModifierSeeder::class,    // Связь блюд с модификаторами
+            DishSeeder::class,            // Дальше блюда
+            DishModifierSeeder::class,    // Связь блюд с модификаторами
         ]);
     }
 }

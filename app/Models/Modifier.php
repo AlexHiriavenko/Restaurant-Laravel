@@ -9,5 +9,11 @@ class Modifier extends Model
 {
     use HasFactory;
 
-    protected $fillable = ['name'];
+    protected $fillable = ['name', 'price'];
+
+    // Связь с блюдами
+    public function dishes()
+    {
+        return $this->belongsToMany(Dish::class, 'dish_modifiers');
+    }
 }

@@ -10,6 +10,7 @@ return new class extends Migration {
         Schema::create('modifiers', function (Blueprint $table) {
             $table->id();
             $table->string('name'); // Название модификатора
+            $table->decimal('price', 5, 2); // Цена
             $table->timestamps();
         });
     }

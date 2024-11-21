@@ -10,13 +10,11 @@ return new class extends Migration {
         Schema::create('dishes', function (Blueprint $table) {
             $table->id();
             $table->string('name'); // Название блюда
-            $table->text('description')->nullable(); // Описание блюда
-            $table->decimal('price', 8, 2); // Цена
-            $table->unsignedTinyInteger('discount')->default(0); // Скидка в %
-            $table->decimal('finally_price', 8, 2); // Итоговая цена
-            $table->boolean('promo')->default(false); // Промо метка
-            $table->string('image')->nullable(); // Путь к изображению блюда
-            $table->foreignId('category_id')->constrained('categories')->onDelete('cascade'); // Связь с категориями
+            $table->text('description')->nullable(); // Описание
+            $table->decimal('price', 7, 2); // Цена
+            $table->integer('discount_percent')->nullable(); // Скидка
+            $table->foreignId('category_id')->constrained('categories')->onDelete('cascade'); // Категория
+            $table->string('img'); // Путь к картинке
             $table->timestamps();
         });
     }
