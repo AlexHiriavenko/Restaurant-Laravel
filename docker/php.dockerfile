@@ -18,4 +18,10 @@ COPY --from=composer:latest /usr/bin/composer /usr/bin/composer
 
 WORKDIR /var/www
 
-CMD ["php-fpm"]
+# CMD ["php-fpm"]
+
+# Установим umask для создания файлов с правами 777
+RUN echo "umask 0000" >> /etc/profile
+
+# Устанавливаем права на проект при старте контейнера
+CMD chmod -R 777 /var/www && php-fpm

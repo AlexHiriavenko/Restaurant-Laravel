@@ -9,11 +9,10 @@ class CategorySeeder extends Seeder
 {
     public function run()
     {
-        Category::create(['name' => 'Основные', 'image' => 'categories/main_dishes.jpg']);
-        Category::create(['name' => 'Первые', 'image' => 'categories/soups.jpg']);
-        Category::create(['name' => 'Салаты', 'image' => 'categories/salads.jpg']);
-        Category::create(['name' => 'Десерты', 'image' => 'categories/desserts.jpg']);
-        Category::create(['name' => 'Напитки', 'image' => 'categories/drinks.jpg']);
+        Category::create(['name' => 'Основні страви', 'slug' => 'main-dishes', 'image' => 'imgs/categories/main_dishes.jpg']);
+        Category::create(['name' => 'Перші страви', 'slug' => 'soups', 'image' => 'imgs/categories/soups.jpg']);
+        Category::create(['name' => 'Салати', 'slug' => 'salads', 'image' => 'imgs/categories/salads.jpg']);
+        Category::create(['name' => 'Десерти', 'slug' => 'desserts', 'image' => 'imgs/categories/desserts.jpg']);
+        Category::create(['name' => 'Напої', 'slug' => 'drinks', 'image' => 'imgs/categories/drinks.jpg']);
     }
 }
-

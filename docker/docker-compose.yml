@@ -16,6 +16,7 @@ services:
             dockerfile: php.dockerfile
         volumes:
             - ../:/var/www:cached
+        command: sh -c "chmod -R 777 /var/www && php-fpm"
         depends_on:
             - mysql
             - redis
