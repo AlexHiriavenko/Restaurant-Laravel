@@ -9,7 +9,7 @@ class Dish extends Model
 {
     use HasFactory;
 
-    protected $fillable = ['name', 'description', 'price', 'discount_percent', 'category_id', 'img'];
+    protected $fillable = ['name', 'slug', 'description', 'price', 'discount_percent', 'category_id', 'img'];
 
     // Связь с категорией
     public function category()
@@ -21,5 +21,22 @@ class Dish extends Model
     public function modifiers()
     {
         return $this->belongsToMany(Modifier::class, 'dish_modifiers');
+    }
+
+    public function getFinalPriceAttribute()
+    {
+        return $this->discount_percent
+            ? $this->price - ($this->price * $this->discount_percent / 100)
+            : $this->price;
+    }
+
+    public static function getByCategory($categoryId)
+    {
+        return self::where('category_id', $categoryId)->with('category')->get();
+    }
+
+    public static function getById($dishId)
+    {
+        return self::with('modifiers', 'category')->findOrFail($dishId);
     }
 }

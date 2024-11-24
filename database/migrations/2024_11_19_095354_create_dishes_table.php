@@ -10,6 +10,7 @@ return new class extends Migration {
         Schema::create('dishes', function (Blueprint $table) {
             $table->id();
             $table->string('name'); // Название блюда
+            $table->string('slug'); // Название блюда
             $table->text('description')->nullable(); // Описание
             $table->decimal('price', 7, 2); // Цена
             $table->integer('discount_percent')->nullable(); // Скидка
@@ -24,4 +25,3 @@ return new class extends Migration {
         Schema::dropIfExists('dishes');
     }
 };
-

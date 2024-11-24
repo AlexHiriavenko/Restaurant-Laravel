@@ -3,6 +3,7 @@
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\CategoryController;
+use App\Http\Controllers\DishController;
 
 /*
 |--------------------------------------------------------------------------
@@ -19,8 +20,8 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
     return $request->user();
 });
 
-Route::get('/test', function (Request $request) {
-    return response()->json(['message' => 'Привет из Laravel API!']);
-});
-
 Route::get('categories', [CategoryController::class, 'index']);
+
+Route::get('categories/{id}/dishes', [DishController::class, 'getByCategory']);
+
+Route::get('dishes/{id}', [DishController::class, 'show']);
