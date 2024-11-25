@@ -16,7 +16,7 @@ services:
             dockerfile: php.dockerfile
         volumes:
             - ../:/var/www:cached
-        command: sh -c "chmod -R 777 /var/www && php-fpm"
+        # command: sh -c "chmod -R 777 /var/www && php-fpm"  # для wsl или linux
         depends_on:
             - mysql
             - redis
