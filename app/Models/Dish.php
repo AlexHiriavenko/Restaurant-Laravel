@@ -39,4 +39,9 @@ class Dish extends Model
     {
         return self::with('modifiers', 'category')->findOrFail($dishId);
     }
+
+    public static function getBySlug($slug)
+    {
+        return self::with('modifiers', 'category')->where('slug', $slug)->firstOrFail();
+    }
 }

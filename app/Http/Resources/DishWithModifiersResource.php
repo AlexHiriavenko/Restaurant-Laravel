@@ -6,6 +6,8 @@ use Illuminate\Http\Resources\Json\JsonResource;
 
 class DishWithModifiersResource extends JsonResource
 {
+    public static $wrap = null; // Отключаем обертку data
+
     public function toArray($request)
     {
         // Основные данные блюда

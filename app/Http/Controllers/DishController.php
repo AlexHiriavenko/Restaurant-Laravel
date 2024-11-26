@@ -23,4 +23,11 @@ class DishController extends Controller
         $dish = Dish::getById($id);
         return new DishWithModifiersResource($dish);
     }
+
+    // example: http://localhost:8080/api/dishes/americano
+    public function getBySlug($slug)
+    {
+        $dish = Dish::getBySlug($slug);
+        return new DishWithModifiersResource($dish);
+    }
 }
