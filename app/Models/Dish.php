@@ -23,6 +23,7 @@ class Dish extends Model
         return $this->belongsToMany(Modifier::class, 'dish_modifiers');
     }
 
+    // цена с учетом скидки
     public function getFinalPriceAttribute()
     {
         return $this->discount_percent
@@ -43,5 +44,23 @@ class Dish extends Model
     public static function getBySlug($slug)
     {
         return self::with('modifiers', 'category')->where('slug', $slug)->firstOrFail();
+    }
+
+    public static function filterBySearch($query, $search)
+    {
+        return $query->where('name', 'like', "%{$search}%")
+            ->orWhere('description', 'like', "%{$search}%");
+    }
+
+    // Получение блюд с фильтрацией и пагинацией
+    public static function getDishesWithPagination($search = null, $perPage = 4)
+    {
+        $query = self::query()->with('category');
+
+        if ($search) {
+            self::filterBySearch($query, $search);
+        }
+
+        return $query->orderBy('id')->cursorPaginate($perPage);
     }
 }

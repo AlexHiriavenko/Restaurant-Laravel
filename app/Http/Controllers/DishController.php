@@ -5,9 +5,26 @@ namespace App\Http\Controllers;
 use App\Http\Resources\DishResource;
 use App\Models\Dish;
 use App\Http\Resources\DishWithModifiersResource;
+use Illuminate\Http\Request;
 
 class DishController extends Controller
 {
+
+    // Загрузка блюд с лейзи лоад и фильтрацией
+    public function index(Request $request)
+    {
+        $validated = $request->validate([
+            'search' => 'nullable|string',
+            'per_page' => 'nullable|integer|min:1|max:100',
+        ]);
+
+        $search = $validated['search'] ?? null;
+        $perPage = $validated['per_page'] ?? 4;
+
+        $dishes = Dish::getDishesWithPagination($search, $perPage);
+
+        return DishResource::collection($dishes);
+    }
 
     // example: http://localhost:8080/api/categories/4/dishes
     public function getByCategory($id)

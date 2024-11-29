@@ -27,3 +27,5 @@ Route::get('categories/{id}/dishes', [DishController::class, 'getByCategory']);
 Route::get('dishes/{id}', [DishController::class, 'show'])->where('id', '[0-9]+');
 
 Route::get('dishes/{slug}', [DishController::class, 'getBySlug'])->where('slug', '[a-zA-Z_-]+');
+
+Route::get('dishes', [DishController::class, 'index']);
