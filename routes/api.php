@@ -24,8 +24,10 @@ Route::get('categories', [CategoryController::class, 'index']);
 
 Route::get('categories/{id}/dishes', [DishController::class, 'getByCategory']);
 
+Route::get('dishes', [DishController::class, 'index']);
+
+Route::get('dishes/promo', [DishController::class, 'getByDiscount']);
+
 Route::get('dishes/{id}', [DishController::class, 'show'])->where('id', '[0-9]+');
 
 Route::get('dishes/{slug}', [DishController::class, 'getBySlug'])->where('slug', '[a-zA-Z_-]+');
-
-Route::get('dishes', [DishController::class, 'index']);

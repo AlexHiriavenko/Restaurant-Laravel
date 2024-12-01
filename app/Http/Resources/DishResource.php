@@ -17,6 +17,7 @@ class DishResource extends JsonResource
             'discount_percent' => $this->discount_percent,
             'final_price' => $this->final_price,
             'category' => $this->category->name, // Связь с категорией
+            'category_slug' => $this->category->slug,
             'img' => asset('storage/' . $this->img),
         ];
     }

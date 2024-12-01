@@ -10,6 +10,7 @@ use Illuminate\Http\Request;
 class DishController extends Controller
 {
 
+    // http://localhost:8080/api/dishes?per_page=6
     // Загрузка блюд с лейзи лоад и фильтрацией
     public function index(Request $request)
     {
@@ -33,6 +34,11 @@ class DishController extends Controller
         return DishResource::collection($dishes)->resolve();
     }
 
+    public function getByDiscount()
+    {
+        $dishes = Dish::getByDiscount();
+        return DishResource::collection($dishes)->resolve();
+    }
 
     // example: http://localhost:8080/api/dishes/1
     public function show($id)

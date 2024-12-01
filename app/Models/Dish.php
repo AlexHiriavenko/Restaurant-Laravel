@@ -36,6 +36,13 @@ class Dish extends Model
         return self::where('category_id', $categoryId)->with('category')->get();
     }
 
+    public static function getByDiscount()
+    {
+        return self::whereNotNull('discount_percent')
+            ->where('discount_percent', '>', 0)
+            ->get();
+    }
+
     public static function getById($dishId)
     {
         return self::with('modifiers', 'category')->findOrFail($dishId);
@@ -49,13 +56,14 @@ class Dish extends Model
     public static function filterBySearch($query, $search)
     {
         return $query->where('name', 'like', "%{$search}%")
-            ->orWhere('description', 'like', "%{$search}%");
+            ->orWhere('description', 'like', "%{$search}%")
+            ->orWhereRelation('category', 'name', 'like', "%{$search}%");
     }
 
     // Получение блюд с фильтрацией и пагинацией
     public static function getDishesWithPagination($search = null, $perPage = 4)
     {
-        $query = self::query()->with('category');
+        $query = self::query()->with('category'); // Подгружаем категории
 
         if ($search) {
             self::filterBySearch($query, $search);
