@@ -12,8 +12,9 @@ return new class extends Migration {
             $table->foreignId('order_id')->constrained('orders')->onDelete('cascade'); // Связь с заказом
             $table->foreignId('dish_id')->constrained('dishes')->onDelete('cascade'); // Связь с блюдом
             $table->integer('quantity'); // Количество
-            $table->decimal('price', 10, 2); // Цена за единицу
-            $table->decimal('total_price', 10, 2); // Итоговая цена за количество
+            $table->decimal('price', 10, 2); // Цена за единицу блюда (без модификаторов)
+            $table->decimal('total_price', 10, 2); // Итоговая цена за количество блюда с модификаторами
+            $table->timestamps();
         });
     }
 
