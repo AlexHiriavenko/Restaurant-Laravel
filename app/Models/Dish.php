@@ -55,10 +55,15 @@ class Dish extends Model
 
     public static function filterBySearch($query, $search)
     {
-        return $query->where('name', 'like', "%{$search}%")
-            ->orWhere('description', 'like', "%{$search}%")
-            ->orWhereRelation('category', 'name', 'like', "%{$search}%");
+        return $query->where(function ($q) use ($search) {
+            $q->where('name', 'like', "%{$search}%")
+                ->orWhere('description', 'like', "%{$search}%")
+                ->orWhereHas('category', function ($categoryQuery) use ($search) {
+                    $categoryQuery->where('name', 'like', "%{$search}%");
+                });
+        });
     }
+
 
     // Получение блюд с фильтрацией и пагинацией
     public static function getDishesWithPagination($search = null, $perPage = 4)
