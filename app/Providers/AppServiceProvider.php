@@ -3,6 +3,14 @@
 namespace App\Providers;
 
 use Illuminate\Support\ServiceProvider;
+use App\Repositories\CategoryRepository;
+use App\Services\CategoryService;
+use App\Repositories\Interfaces\CategoryRepositoryInterface;
+use App\Services\Interfaces\CategoryServiceInterface;
+use App\Repositories\DishRepository;
+use App\Services\DishService;
+use App\Repositories\Interfaces\DishRepositoryInterface;
+use App\Services\Interfaces\DishServiceInterface;
 
 class AppServiceProvider extends ServiceProvider
 {
@@ -11,7 +19,12 @@ class AppServiceProvider extends ServiceProvider
      */
     public function register(): void
     {
-        //
+
+        $this->app->bind(CategoryRepositoryInterface::class, CategoryRepository::class);
+        $this->app->bind(CategoryServiceInterface::class, CategoryService::class);
+
+        $this->app->bind(DishRepositoryInterface::class, DishRepository::class);
+        $this->app->bind(DishServiceInterface::class, DishService::class);
     }
 
     /**

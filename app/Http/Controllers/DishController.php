@@ -2,16 +2,20 @@
 
 namespace App\Http\Controllers;
 
+use App\Services\Interfaces\DishServiceInterface;
 use App\Http\Resources\DishResource;
-use App\Models\Dish;
 use App\Http\Resources\DishWithModifiersResource;
 use Illuminate\Http\Request;
 
 class DishController extends Controller
 {
+    protected DishServiceInterface $dishService;
 
-    // http://localhost:8080/api/dishes?per_page=6
-    // Загрузка блюд с лейзи лоад и фильтрацией
+    public function __construct(DishServiceInterface $dishService)
+    {
+        $this->dishService = $dishService;
+    }
+
     public function index(Request $request)
     {
         $validated = $request->validate([
@@ -22,35 +26,32 @@ class DishController extends Controller
         $search = $validated['search'] ?? null;
         $perPage = $validated['per_page'] ?? 4;
 
-        $dishes = Dish::getDishesWithPagination($search, $perPage);
+        $dishes = $this->dishService->getDishesWithPagination($search, $perPage);
 
         return DishResource::collection($dishes);
     }
 
-    // example: http://localhost:8080/api/categories/4/dishes
-    public function getByCategory($id)
+    public function show(int $id)
     {
-        $dishes = Dish::getByCategory($id);
+        $dish = $this->dishService->findById($id);
+        return new DishWithModifiersResource($dish);
+    }
+
+    public function getByCategory(int $id)
+    {
+        $dishes = $this->dishService->getByCategory($id);
         return DishResource::collection($dishes)->resolve();
     }
 
     public function getByDiscount()
     {
-        $dishes = Dish::getByDiscount();
+        $dishes = $this->dishService->getByDiscount();
         return DishResource::collection($dishes)->resolve();
     }
 
-    // example: http://localhost:8080/api/dishes/1
-    public function show($id)
+    public function findBySlug(string $slug)
     {
-        $dish = Dish::getById($id);
-        return new DishWithModifiersResource($dish);
-    }
-
-    // example: http://localhost:8080/api/dishes/americano
-    public function getBySlug($slug)
-    {
-        $dish = Dish::getBySlug($slug);
+        $dish = $this->dishService->findBySlug($slug);
         return new DishWithModifiersResource($dish);
     }
 }

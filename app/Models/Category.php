@@ -16,10 +16,4 @@ class Category extends Model
     {
         return $this->hasMany(Dish::class);
     }
-
-    // Метод для получения всех категорий
-    public static function getAllCategories()
-    {
-        return self::all();
-    }
 }
