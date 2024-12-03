@@ -5,7 +5,7 @@ namespace App\Http\Controllers;
 use App\Services\Interfaces\DishServiceInterface;
 use App\Http\Resources\DishResource;
 use App\Http\Resources\DishWithModifiersResource;
-use Illuminate\Http\Request;
+use App\Http\Requests\DishIndexRequest;
 
 class DishController extends Controller
 {
@@ -16,15 +16,10 @@ class DishController extends Controller
         $this->dishService = $dishService;
     }
 
-    public function index(Request $request)
+    public function index(DishIndexRequest $request)
     {
-        $validated = $request->validate([
-            'search' => 'nullable|string',
-            'per_page' => 'nullable|integer|min:1|max:100',
-        ]);
-
-        $search = $validated['search'] ?? null;
-        $perPage = $validated['per_page'] ?? 4;
+        $search = $request->input('search');
+        $perPage = $request->input('per_page', 4);
 
         $dishes = $this->dishService->getDishesWithPagination($search, $perPage);
 
