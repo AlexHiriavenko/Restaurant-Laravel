@@ -19,7 +19,10 @@ return [
 
     'allowed_methods' => ['*'],
 
-    'allowed_origins' => ['*'],
+    'allowed_origins' => array_merge(
+        explode(',', env('FRONTEND_URL_DEV')),
+        explode(',', env('FRONTEND_URL_PROD'))
+    ),
 
     'allowed_origins_patterns' => [],
 
@@ -29,6 +32,6 @@ return [
 
     'max_age' => 0,
 
-    'supports_credentials' => false,
+    'supports_credentials' => true, // Включи поддержку для Sanctum
 
 ];

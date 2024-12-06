@@ -16,24 +16,35 @@ use App\Http\Controllers\DishController;
 |
 */
 
+// Эндпоинт для получения текущего пользователя
 Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
     return $request->user();
 });
 
-// http://localhost:8080/api/categories
-Route::get('categories', [CategoryController::class, 'index']);
+// Маршруты, не требующие авторизации
+Route::prefix('categories')->group(function () {
+    Route::get('/', [CategoryController::class, 'index']);
+    Route::get('{id}/dishes', [DishController::class, 'getByCategory']);
+});
 
-// http://localhost:8080/api/categories/3/dishes
-Route::get('categories/{id}/dishes', [DishController::class, 'getByCategory']);
+Route::prefix('dishes')->group(function () {
+    Route::get('/', [DishController::class, 'index']);
+    Route::get('promo', [DishController::class, 'getByDiscount']);
+    Route::get('{id}', [DishController::class, 'show'])->where('id', '[0-9]+');
+    Route::get('{slug}', [DishController::class, 'findBySlug'])->where('slug', '[a-zA-Z_-]+');
+});
 
-// http://localhost:8080/api/dishes?search=морква&per_page=4
-Route::get('dishes', [DishController::class, 'index']);
+// Маршруты, требующие авторизации
+Route::middleware('auth:sanctum')->group(function () {
+    Route::prefix('categories')->group(function () {
+        Route::post('/', [CategoryController::class, 'store']);
+        Route::put('{id}', [CategoryController::class, 'update']);
+        Route::delete('{id}', [CategoryController::class, 'destroy']);
+    });
 
-// http://localhost:8080/api/dishes/promo
-Route::get('dishes/promo', [DishController::class, 'getByDiscount']);
-
-// http://localhost:8080/api/dishes/9
-Route::get('dishes/{id}', [DishController::class, 'show'])->where('id', '[0-9]+');
-
-// http://localhost:8080/api/dishes/chaj
-Route::get('dishes/{slug}', [DishController::class, 'findBySlug'])->where('slug', '[a-zA-Z_-]+');
+    Route::prefix('dishes')->group(function () {
+        Route::post('/', [DishController::class, 'store']);
+        Route::put('{id}', [DishController::class, 'update']);
+        Route::delete('{id}', [DishController::class, 'destroy']);
+    });
+});
