@@ -9,12 +9,15 @@ use App\Http\Controllers\DishController;
 |--------------------------------------------------------------------------
 | API Routes
 |--------------------------------------------------------------------------
-|
-| Here is where you can register API routes for your application. These
-| routes are loaded by the RouteServiceProvider and all of them will
-| be assigned to the "api" middleware group. Make something great!
-|
 */
+
+// Route::options('/{any}', function (Request $request) {
+//     return response('', 200)
+//         ->header('Access-Control-Allow-Origin', $request->headers->get('Origin'))
+//         ->header('Access-Control-Allow-Methods', 'GET, POST, PUT, DELETE, OPTIONS')
+//         ->header('Access-Control-Allow-Headers', 'Content-Type, Authorization, X-Requested-With')
+//         ->header('Access-Control-Allow-Credentials', 'true');
+// })->where('any', '.*');
 
 // Эндпоинт для получения текущего пользователя
 Route::middleware('auth:sanctum')->get('/user', function (Request $request) {

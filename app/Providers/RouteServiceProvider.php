@@ -28,13 +28,24 @@ class RouteServiceProvider extends ServiceProvider
             return Limit::perMinute(60)->by($request->user()?->id ?: $request->ip());
         });
 
+        // $this->routes(function () {
+        //     Route::middleware(['api', 'cors'])
+        //         ->prefix('api')
+        //         ->group(base_path('routes/api.php'));
+
         $this->routes(function () {
             Route::middleware(['api', 'cors'])
                 ->prefix('api')
-                ->group(base_path('routes/api.php'));
+                ->group(function () {
+                    require base_path('routes/api.php');
+                    require base_path('routes/auth.php'); // Для API
+                });
 
-            Route::middleware(['api', 'cors'])
-                ->group(base_path('routes/web.php'));
+            Route::middleware(['web', 'cors'])
+                ->group(function () {
+                    require base_path('routes/web.php');
+                    require base_path('routes/auth.php'); // Для Web
+                });
         });
     }
 }
