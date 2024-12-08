@@ -38,7 +38,11 @@ return [
     'guards' => [
         'web' => [
             'driver' => 'session',
-            'provider' => 'users',
+            'provider' => 'users', // Ссылается на provider с названием 'users'
+        ],
+        'api' => [
+            'driver' => 'sanctum', // Использует Sanctum
+            'provider' => 'users', // Ссылается на того же provider
         ],
     ],
 

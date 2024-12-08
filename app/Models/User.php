@@ -2,6 +2,10 @@
 
 namespace App\Models;
 
+/**
+ * @method \Laravel\Sanctum\NewAccessToken createToken(string $name, array $abilities = ['*'])
+ */
+
 // use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;

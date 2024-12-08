@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\User;
+use Illuminate\Http\Request;
 
 class UserController extends Controller
 {
@@ -10,7 +11,11 @@ class UserController extends Controller
     {
         // Загружаем пользователей с их ролями
         $users = User::with('role')->get();
+        return response()->json($users); // Возвращаем JSON-ответ
+    }
 
-        dd($users);
+    public function getUser(Request $request)
+    {
+        return response()->json($request->user()); // Возвращаем текущего пользователя
     }
 }

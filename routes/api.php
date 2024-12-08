@@ -4,7 +4,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\CategoryController;
 use App\Http\Controllers\DishController;
-
+use App\Http\Controllers\UserController;
 /*
 |--------------------------------------------------------------------------
 | API Routes
@@ -20,9 +20,10 @@ use App\Http\Controllers\DishController;
 // })->where('any', '.*');
 
 // Эндпоинт для получения текущего пользователя
-Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
-    return $request->user();
-});
+// Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
+//     return $request->user();
+// });
+
 
 // Маршруты, не требующие авторизации
 Route::prefix('categories')->group(function () {
@@ -39,6 +40,11 @@ Route::prefix('dishes')->group(function () {
 
 // Маршруты, требующие авторизации
 Route::middleware('auth:sanctum')->group(function () {
+
+    Route::prefix('user')->group(function () {
+        Route::get('/', [UserController::class, 'getUser']);
+    });
+
     Route::prefix('categories')->group(function () {
         Route::post('/', [CategoryController::class, 'store']);
         Route::put('{id}', [CategoryController::class, 'update']);
