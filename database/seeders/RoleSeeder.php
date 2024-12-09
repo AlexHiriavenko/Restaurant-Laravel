@@ -13,7 +13,9 @@ class RoleSeeder extends Seeder
     {
         // Отключаем проверку внешних ключей
         DB::statement('SET FOREIGN_KEY_CHECKS=0;');
+        // очищаем старую таблицу
         Role::truncate();
+        // заполняем таблицу
         foreach (RoleEnum::all() as $role) {
             Role::updateOrCreate(['name' => $role]);
         }

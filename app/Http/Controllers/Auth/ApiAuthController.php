@@ -10,33 +10,36 @@ use Illuminate\Http\Request;
 
 class ApiAuthController extends Controller
 {
-  protected AuthService $authService;
+    protected AuthService $authService;
 
-  public function __construct(AuthService $authService)
-  {
-    $this->authService = $authService;
-  }
+    public function __construct(AuthService $authService)
+    {
+        $this->authService = $authService;
+    }
 
-  public function login(ApiLoginRequest $request): JsonResponse
-  {
-    // Получаем валидированные данные
-    $validated = $request->validated();
+    public function login(ApiLoginRequest $request): JsonResponse
+    {
+        // Получаем валидированные данные
+        $validated = $request->validated();
 
-    // Вызываем сервис для авторизации и получения токена
-    $tokenData = $this->authService->login(
-      $validated,
-      $request->boolean('rememberMe', false) // rememberMe (по умолчанию false)
-    );
+        // Извлекаем только необходимые поля для авторизации (убирается )
+        $credentials = collect($validated)->only(['email', 'password'])->toArray();
 
-    // Возвращаем ответ с токеном
-    return response()->json($tokenData);
-  }
+        // Вызываем сервис для авторизации и получения токена
+        $tokenData = $this->authService->login(
+            $credentials, // Передаем только email и password
+            $request->boolean('rememberMe', false) // rememberMe (по умолчанию false)
+        );
 
-  public function logout(Request $request): JsonResponse
-  {
-    // Передаем текущего пользователя в сервис
-    $this->authService->logout($request->user());
+        // Возвращаем ответ с токеном
+        return response()->json($tokenData);
+    }
 
-    return response()->json(['message' => 'Successfully logged out'], 200);
-  }
+    public function logout(Request $request): JsonResponse
+    {
+        // Передаем текущего пользователя в сервис
+        $this->authService->logout($request->user());
+
+        return response()->json(['message' => 'Successfully logged out'], 200);
+    }
 }
