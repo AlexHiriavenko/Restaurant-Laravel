@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\User;
 use Illuminate\Http\Request;
+use App\Http\Resources\UserResource;
 
 class UserController extends Controller
 {
@@ -16,6 +17,8 @@ class UserController extends Controller
 
     public function getUser(Request $request)
     {
-        return response()->json($request->user()); // Возвращаем текущего пользователя
+        // return response()->json($request->user()); // работает
+        $user = $request->user();
+        return response()->json((new UserResource($user))->resolve());
     }
 }

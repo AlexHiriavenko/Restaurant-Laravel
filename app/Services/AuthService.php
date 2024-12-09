@@ -3,7 +3,6 @@
 namespace App\Services;
 
 use Illuminate\Support\Facades\Auth;
-use Illuminate\Validation\ValidationException;
 use App\Models\User;
 use Carbon\Carbon;
 use App\Exceptions\UnauthorizedException;
@@ -13,10 +12,7 @@ class AuthService
   public function login(array $credentials, bool $rememberMe): array
   {
     // Проверяем данные с помощью Auth::attempt
-    if (!Auth::attempt(['email' => $credentials['email'], 'password' => $credentials['password']])) {
-      // throw ValidationException::withMessages([
-      //   'message' => ['The provided credentials are incorrect.'],
-      // ]);
+    if (!Auth::attempt($credentials)) {
       throw new UnauthorizedException('The provided credentials are incorrect.');
     }
 
@@ -39,5 +35,15 @@ class AuthService
       'access_token' => $token->plainTextToken,
       'token_type' => 'Bearer',
     ];
+  }
+
+  public function logout(User $user): void
+  {
+    /** @var \Laravel\Sanctum\PersonalAccessToken|null $token */
+    $token = $user->currentAccessToken();
+
+    if ($token) {
+      $token->delete();
+    }
   }
 }

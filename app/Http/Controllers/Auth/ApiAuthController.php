@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use App\Http\Requests\Auth\ApiLoginRequest;
 use App\Services\AuthService;
 use Illuminate\Http\JsonResponse;
+use Illuminate\Http\Request;
 
 class ApiAuthController extends Controller
 {
@@ -29,5 +30,13 @@ class ApiAuthController extends Controller
 
     // Возвращаем ответ с токеном
     return response()->json($tokenData);
+  }
+
+  public function logout(Request $request): JsonResponse
+  {
+    // Передаем текущего пользователя в сервис
+    $this->authService->logout($request->user());
+
+    return response()->json(['message' => 'Successfully logged out'], 200);
   }
 }
