@@ -13,7 +13,7 @@ class DatabaseSeeder extends Seeder
     public function run()
     {
         $this->call([
-            RoleSeeder::class,             // Сначала создаются роли
+            RoleSeeder::class,            // Сначала создаются роли
             PermissionSeeder::class,      // Затем создаются разрешения
             RolePermissionSeeder::class,  // Привязываются роли и разрешения
             UserSeeder::class,            // Затем создаются пользователи с ролями

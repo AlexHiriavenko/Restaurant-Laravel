@@ -2,41 +2,56 @@
 
 namespace Database\Seeders;
 
+use Illuminate\Support\Facades\DB;
 use Illuminate\Database\Seeder;
 use App\Models\User;
-use App\Models\Role;
+use App\Enums\RoleEnum;
 use Illuminate\Support\Facades\Hash;
 
 class UserSeeder extends Seeder
 {
     public function run()
     {
-        $adminRole = Role::where('name', 'admin')->first();
-        $managerRole = Role::where('name', 'manager')->first();
-        $clientRole = Role::where('name', 'client')->first();
+        // Отключаем проверку внешних ключей
+        DB::statement('SET FOREIGN_KEY_CHECKS=0;');
+        // Очистка таблицы перед заполнением
+        User::truncate();
+
+        $superAdminRole = RoleEnum::find(RoleEnum::SuperAdmin->value);
+        $adminRole = RoleEnum::find(RoleEnum::Admin->value);
+        $managerRole = RoleEnum::find(RoleEnum::Manager->value);
+        $clientRole = RoleEnum::find(RoleEnum::Client->value);
+
+        User::create([
+            'name' => 'super admin',
+            'email' => 'superadmin@superadmin.com',
+            'password' => Hash::make('superadmin'),
+            'avatar' => 'imgs/avatars/admin.png',
+            'role_id' => $superAdminRole->id,
+        ]);
 
         User::create([
             'name' => 'admin',
             'email' => 'admin@admin.com',
             'password' => Hash::make('admin'),
-            'avatar' => 'imgs/avatars/admin.jpg',
-            'role_id' => $adminRole->id, // Привязка к роли
+            'avatar' => 'imgs/avatars/admin.png',
+            'role_id' => $adminRole->id,
         ]);
 
         User::create([
             'name' => 'manager',
             'email' => 'manager@manager.com',
             'password' => Hash::make('manager'),
-            'avatar' => 'imgs/avatars/manager.jpg',
-            'role_id' => $managerRole->id, // Привязка к роли
+            'avatar' => 'imgs/avatars/manager.png',
+            'role_id' => $managerRole->id,
         ]);
 
         User::create([
             'name' => 'client',
             'email' => 'client@client.com',
             'password' => Hash::make('client'),
-            'avatar' => 'imgs/avatars/client.jpg',
-            'role_id' => $clientRole->id, // Привязка к роли
+            'avatar' => 'imgs/avatars/client.png',
+            'role_id' => $clientRole->id,
         ]);
     }
 }
