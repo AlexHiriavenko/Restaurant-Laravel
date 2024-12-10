@@ -17,9 +17,11 @@ version: Laravel v10.48.22 (PHP v8.2.25)
 10. перейти на http://localhost:8080/
 11. для phpMyAdmin: http://localhost:8081/ ; user: root, pwd: root.
 
-## Полезные команды:
+## Примеры Полезных команд artisan:
 
 -   docker-compose exec php php artisan migrate:reset
+-   docker-compose exec php php artisan migrate --seed
 -   docker-compose exec php php artisan migrate
 -   docker-compose exec php php artisan db:seed
--   docker-compose exec php php artisan migrate --seed
+-   docker-compose exec php php artisan db:seed --class=RoleSeeder
+-   docker-compose exec php php artisan db:seed --class=UserSeeder
