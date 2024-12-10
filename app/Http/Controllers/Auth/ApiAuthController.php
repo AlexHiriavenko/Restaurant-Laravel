@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Auth;
 
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Auth\ApiLoginRequest;
+use App\Http\Requests\Auth\ApiRegisterRequest;
 use App\Services\AuthService;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
@@ -41,5 +42,20 @@ class ApiAuthController extends Controller
         $this->authService->logout($request->user());
 
         return response()->json(['message' => 'Successfully logged out'], 200);
+    }
+
+    public function register(ApiRegisterRequest $request): JsonResponse
+    {
+        $validated = $request->validated();
+
+        $credentials = collect($validated)
+            ->only(['name', 'email', 'password'])->toArray();
+
+        $user = $this->authService->register($credentials);
+
+        return response()->json([
+            'message' => 'Пользователь успешно зарегистрирован.',
+            'user' => $user,
+        ], 201);
     }
 }
