@@ -7,6 +7,7 @@ namespace App\Models;
  */
 
 // use Illuminate\Contracts\Auth\MustVerifyEmail;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
@@ -49,18 +50,21 @@ class User extends Authenticatable
         'password' => 'hashed',
     ];
 
-    public function role()
+    public function role(): BelongsTo
     {
         return $this->belongsTo(Role::class);
     }
 
-    public function hasRole($role)
+    public function hasRole(string|array $roles): bool
     {
-        return $this->role->name === $role;
+        if (is_array($roles)) {
+            return in_array($this->role->name, $roles, true);
+        }
+        return $this->role->name === $roles;
     }
 
-    public function hasPermission($permission)
+    public function hasPermission(string $permission): bool
     {
-        return $this->role->permissions->contains('name', $permission);
+        return $this->role && $this->role->permissions->contains('name', $permission);
     }
 }

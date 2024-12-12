@@ -59,6 +59,7 @@ Route::middleware('auth:sanctum')->group(function () {
     });
 
     Route::prefix('orders')->group(function () {
-        Route::post('/store', [OrderController::class, 'store'])->name('orders.store');
+        Route::get('/user-history/{id?}', [OrderController::class, 'getUserOrders'])->name('userHistory');
+        Route::post('/store', [OrderController::class, 'store'])->name('store');
     });
 });

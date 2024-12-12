@@ -2,6 +2,8 @@
 
 namespace App\Exceptions;
 
+use Illuminate\Auth\Access\AuthorizationException;
+use Symfony\Component\HttpFoundation\Response;
 use Illuminate\Foundation\Exceptions\Handler as ExceptionHandler;
 use Throwable;
 
@@ -26,5 +28,17 @@ class Handler extends ExceptionHandler
         $this->reportable(function (Throwable $e) {
             //
         });
+    }
+
+    public function render($request, \Throwable $exception): Response
+    {
+        if ($exception instanceof AuthorizationException) {
+            return response()->json([
+                'success' => false,
+                'message' => 'Недостатньо прав доступу',
+            ], 403);
+        }
+
+        return parent::render($request, $exception);
     }
 }

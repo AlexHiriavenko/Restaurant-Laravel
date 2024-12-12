@@ -4,6 +4,8 @@ namespace App\Providers;
 
 use Illuminate\Auth\Notifications\ResetPassword;
 use Illuminate\Foundation\Support\Providers\AuthServiceProvider as ServiceProvider;
+use Illuminate\Support\Facades\Gate;
+use App\Models\User;
 
 class AuthServiceProvider extends ServiceProvider
 {
@@ -24,9 +26,24 @@ class AuthServiceProvider extends ServiceProvider
         $this->registerPolicies();
 
         ResetPassword::createUrlUsing(function (object $notifiable, string $token) {
-            return config('app.frontend_url')."/password-reset/$token?email={$notifiable->getEmailForPasswordReset()}";
+            return config('app.frontend_url') . "/password-reset/$token?email={$notifiable->getEmailForPasswordReset()}";
         });
 
-        //
+        // Настройка Gate для проверки разрешений
+        Gate::define('manage_all_orders', function (User $user) {
+            return $user->hasPermission('manage_all_orders');
+        });
+
+        Gate::define('manage_reservations', function (User $user) {
+            return $user->hasPermission('manage_reservations');
+        });
+
+        Gate::define('manage_dishes', function (User $user) {
+            return $user->hasPermission('manage_dishes');
+        });
+
+        Gate::define('view_reports', function (User $user) {
+            return $user->hasPermission('view_reports');
+        });
     }
 }
