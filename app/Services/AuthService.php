@@ -30,7 +30,7 @@ class AuthService
             ['*'], // Разрешения токена
             $rememberMe
                 ? Carbon::now()->addDays(30)
-                : Carbon::now()->addSeconds(120)
+                : Carbon::now()->addHours(2)
         );
 
         // Возвращаем данные токена

@@ -5,6 +5,7 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\CategoryController;
 use App\Http\Controllers\DishController;
 use App\Http\Controllers\UserController;
+use App\Http\Controllers\OrderController;
 /*
 |--------------------------------------------------------------------------
 | API Routes
@@ -55,5 +56,9 @@ Route::middleware('auth:sanctum')->group(function () {
         Route::post('/', [DishController::class, 'store']);
         Route::put('{id}', [DishController::class, 'update']);
         Route::delete('{id}', [DishController::class, 'destroy']);
+    });
+
+    Route::prefix('orders')->group(function () {
+        Route::post('/store', [OrderController::class, 'store'])->name('orders.store');
     });
 });
