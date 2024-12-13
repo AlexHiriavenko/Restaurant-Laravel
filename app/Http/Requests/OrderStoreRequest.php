@@ -21,6 +21,7 @@ class OrderStoreRequest extends FormRequest
             'total' => 'required|numeric|min:0',
             'dishes' => 'required|array|min:1',
             'dishes.*.id' => 'required|exists:dishes,id',
+            'dishes.*.name' => 'required|string',
             'dishes.*.quantity' => 'required|integer|min:1',
             'dishes.*.price' => 'required|numeric|min:0',
             'dishes.*.total' => 'required|numeric|min:0',

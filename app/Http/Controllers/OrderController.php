@@ -26,6 +26,6 @@ class OrderController extends Controller
     {
         $userId = $request->validatedUserId();
         $orders = $this->orderService->getUserOrders($userId);
-        return response()->json(['success' => true, 'data' => $orders]);
+        return response()->json($orders);
     }
 }

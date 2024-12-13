@@ -31,6 +31,7 @@ class OrderService
         foreach ($data['dishes'] as $dish) {
             $orderItem = new OrderItem([
                 'dish_id' => $dish['id'],
+                'name' => $dish['name'],
                 'quantity' => $dish['quantity'],
                 'price' => $dish['price'],
                 'total_price' => $dish['total'],
