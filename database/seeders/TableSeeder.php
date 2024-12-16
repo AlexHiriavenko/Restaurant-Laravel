@@ -9,30 +9,27 @@ class TableSeeder extends Seeder
 {
     public function run()
     {
-        // 4 столика по 2 места
+        // 4 столика на 1...2 места
         for ($i = 1; $i <= 4; $i++) {
             Table::create([
                 'number' => $i,
                 'capacity' => 2,
-                'status' => 'available',
             ]);
         }
 
-        // 4 столика по 4 места
+        // 4 столика на 3...4 места
         for ($i = 5; $i <= 8; $i++) {
             Table::create([
                 'number' => $i,
                 'capacity' => 4,
-                'status' => 'available',
             ]);
         }
 
-        // 2 столика по 6 мест
+        // 2 столика на 5...8 мест
         for ($i = 9; $i <= 10; $i++) {
             Table::create([
                 'number' => $i,
-                'capacity' => 6,
-                'status' => 'available',
+                'capacity' => 8,
             ]);
         }
     }

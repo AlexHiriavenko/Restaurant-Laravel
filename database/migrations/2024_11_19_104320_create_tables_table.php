@@ -10,8 +10,7 @@ return new class extends Migration {
         Schema::create('tables', function (Blueprint $table) {
             $table->id();
             $table->integer('number')->unique(); // Номер столика
-            $table->integer('capacity'); // Вместимость (2, 4, 6 человек)
-            $table->enum('status', ['available', 'occupied'])->default('available'); // Статус столика
+            $table->integer('capacity'); // Вместимость (2, 4, 8 человек)
             $table->timestamps();
         });
     }
@@ -21,4 +20,3 @@ return new class extends Migration {
         Schema::dropIfExists('tables');
     }
 };
-

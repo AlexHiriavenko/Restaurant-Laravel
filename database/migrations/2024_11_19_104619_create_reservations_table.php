@@ -11,10 +11,11 @@ return new class extends Migration {
             $table->id();
             $table->foreignId('user_id')->constrained('users')->onDelete('cascade'); // Пользователь
             $table->foreignId('table_id')->constrained('tables')->onDelete('cascade'); // Столик
-            $table->integer('guest_count'); // Количество гостей
-            $table->dateTime('reservation_time'); // Время начала бронирования
-            $table->integer('duration')->default(1); // Продолжительность бронирования в часах
-            $table->enum('status', ['pending', 'confirmed', 'cancelled'])->default('pending'); // Статус
+            $table->date('reservation_date'); // Дата бронирования
+            $table->time('start_time'); // Время начала бронирования
+            $table->time('end_time'); // Время конца бронирования
+            $table->string('phone_number'); // Номер телефона клиента
+            $table->string('name'); // Имя клиента
             $table->timestamps();
         });
     }
@@ -24,4 +25,3 @@ return new class extends Migration {
         Schema::dropIfExists('reservations');
     }
 };
-

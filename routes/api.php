@@ -6,6 +6,7 @@ use App\Http\Controllers\CategoryController;
 use App\Http\Controllers\DishController;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\OrderController;
+use App\Http\Controllers\BookingController;
 /*
 |--------------------------------------------------------------------------
 | API Routes
@@ -39,6 +40,7 @@ Route::prefix('dishes')->group(function () {
     Route::get('{slug}', [DishController::class, 'findBySlug'])->where('slug', '[a-zA-Z_-]+');
 });
 
+
 // Маршруты, требующие авторизации
 Route::middleware('auth:sanctum')->group(function () {
 
@@ -53,13 +55,20 @@ Route::middleware('auth:sanctum')->group(function () {
     });
 
     Route::prefix('dishes')->group(function () {
-        Route::post('/', [DishController::class, 'store']);
-        Route::put('{id}', [DishController::class, 'update']);
-        Route::delete('{id}', [DishController::class, 'destroy']);
+        Route::post('/', [DishController::class, 'store'])->name('createDish');
+        Route::put('{id}', [DishController::class, 'update'])->name('updateDish');
+        Route::delete('{id}', [DishController::class, 'destroy'])->name('deleteDish');
     });
 
     Route::prefix('orders')->group(function () {
-        Route::get('/user-history/{id?}', [OrderController::class, 'getUserOrders'])->name('userHistory');
-        Route::post('/store', [OrderController::class, 'store'])->name('store');
+        Route::get('/user-history/{id?}', [OrderController::class, 'getUserOrders'])->name('userOrdersHistory');
+        Route::post('/store', [OrderController::class, 'store'])->name('store')->name('saveOrder');
+    });
+
+    Route::prefix('booking')->group(function () {
+        Route::get('/tables', [BookingController::class, 'getTables'])->name('tables');
+        Route::get('/reservations', [BookingController::class, 'getAllReservations'])->name('getAllReservations');
+        Route::get('/reservations/user/{id}', [BookingController::class, 'getReservationsByUserId'])->name('getReservationsByUser');
+        Route::post('/store', [BookingController::class, 'store'])->name('createReservation');
     });
 });
