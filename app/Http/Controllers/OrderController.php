@@ -6,6 +6,7 @@ use App\Http\Requests\OrderStoreRequest;
 use App\Http\Requests\OrderRequest;
 use App\Services\OrderService;
 use Illuminate\Http\JsonResponse;
+use App\Http\Resources\OrderResource;
 
 class OrderController extends Controller
 {
@@ -19,13 +20,13 @@ class OrderController extends Controller
     public function store(OrderStoreRequest $request): JsonResponse
     {
         $order = $this->orderService->createOrder($request->validated());
-        return response()->json(['success' => true, 'data' => $order], 201);
+        return response()->json(new OrderResource($order), 201);
     }
 
-    public function getUserOrders(OrderRequest $request): JsonResponse
+    public function getUserOrders(OrderRequest $request): JsonResponse|array
     {
-        $userId = $request->validatedUserId();
+        $userId = $request->defineUserId();
         $orders = $this->orderService->getUserOrders($userId);
-        return response()->json($orders);
+        return OrderResource::collection($orders)->resolve();
     }
 }

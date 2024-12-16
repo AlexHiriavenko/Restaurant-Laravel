@@ -67,8 +67,8 @@ Route::middleware('auth:sanctum')->group(function () {
 
     Route::prefix('booking')->group(function () {
         Route::get('/tables', [BookingController::class, 'getTables'])->name('tables');
-        Route::get('/reservations', [BookingController::class, 'getAllReservations'])->name('getAllReservations');
+        Route::get('/index', [BookingController::class, 'index'])->name('getAllReservations');
+        Route::post('/store/user/{id?}', [BookingController::class, 'store'])->name('createReservation');
         Route::get('/reservations/user/{id}', [BookingController::class, 'getReservationsByUserId'])->name('getReservationsByUser');
-        Route::post('/store', [BookingController::class, 'store'])->name('createReservation');
     });
 });
