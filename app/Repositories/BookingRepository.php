@@ -46,12 +46,19 @@ class BookingRepository implements BookingRepositoryInterface
   {
     return Reservation::where('user_id', $userId)
       ->where('reservation_date', '>=', now()->toDateString()) // Только сегодня и в будущем
+      ->orderBy('reservation_date', 'asc')
       ->get();
   }
 
   public function getAllActiveReservations(): Collection
   {
     return Reservation::where('reservation_date', '>=', now()->toDateString()) // Только сегодня и в будущем
+      ->orderBy('reservation_date', 'asc')
       ->get();
+  }
+
+  public function findReservationById(int $id): ?Reservation
+  {
+    return Reservation::find($id);
   }
 }

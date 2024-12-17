@@ -13,20 +13,6 @@ use App\Http\Controllers\BookingController;
 |--------------------------------------------------------------------------
 */
 
-// Route::options('/{any}', function (Request $request) {
-//     return response('', 200)
-//         ->header('Access-Control-Allow-Origin', $request->headers->get('Origin'))
-//         ->header('Access-Control-Allow-Methods', 'GET, POST, PUT, DELETE, OPTIONS')
-//         ->header('Access-Control-Allow-Headers', 'Content-Type, Authorization, X-Requested-With')
-//         ->header('Access-Control-Allow-Credentials', 'true');
-// })->where('any', '.*');
-
-// Эндпоинт для получения текущего пользователя
-// Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
-//     return $request->user();
-// });
-
-
 // Маршруты, не требующие авторизации
 Route::prefix('categories')->group(function () {
     Route::get('/', [CategoryController::class, 'index']);
@@ -48,12 +34,6 @@ Route::middleware('auth:sanctum')->group(function () {
         Route::get('/', [UserController::class, 'getUser']);
     });
 
-    Route::prefix('categories')->group(function () {
-        Route::post('/', [CategoryController::class, 'store']);
-        Route::put('{id}', [CategoryController::class, 'update']);
-        Route::delete('{id}', [CategoryController::class, 'destroy']);
-    });
-
     Route::prefix('dishes')->group(function () {
         Route::post('/', [DishController::class, 'store'])->name('createDish');
         Route::put('{id}', [DishController::class, 'update'])->name('updateDish');
@@ -61,14 +41,16 @@ Route::middleware('auth:sanctum')->group(function () {
     });
 
     Route::prefix('orders')->group(function () {
-        Route::get('/user-history/{id?}', [OrderController::class, 'getUserOrders'])->name('userOrdersHistory');
+        Route::get('/user/{id?}', [OrderController::class, 'getUserOrders'])->name('userOrders');
         Route::post('/store', [OrderController::class, 'store'])->name('store')->name('saveOrder');
     });
 
     Route::prefix('booking')->group(function () {
         Route::get('/tables', [BookingController::class, 'getTables'])->name('tables');
-        Route::get('/index', [BookingController::class, 'index'])->name('getAllReservations');
+        Route::get('/index', [BookingController::class, 'index'])->name('reservations')
+            ->middleware('can:manage_reservations');
         Route::post('/store/user/{id?}', [BookingController::class, 'store'])->name('createReservation');
-        Route::get('/reservations/user/{id}', [BookingController::class, 'getReservationsByUserId'])->name('getReservationsByUser');
+        Route::get('/active_reservations/user/{id?}', [BookingController::class, 'getUserActiveReservations'])->name('userActiveReservations');
+        Route::delete('{id}', [BookingController::class, 'destroy'])->name('deleteReservation');
     });
 });

@@ -12,6 +12,7 @@ class ReservationResource extends JsonResource
       'id' => $this->id,
       'user' => new UserResource($this->whenLoaded('user')),
       'table' => new TableResource($this->whenLoaded('table')),
+      'table_id' => $this->table_id,
       'reservation_date' => $this->reservation_date,
       'start_time' => $this->start_time,
       'end_time' => $this->end_time,

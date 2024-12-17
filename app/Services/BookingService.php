@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Services;
 
+use App\Models\Reservation;
 use Illuminate\Database\Eloquent\Collection;
 use App\Repositories\Interfaces\BookingRepositoryInterface;
 use App\Services\Interfaces\BookingServiceInterface;
@@ -50,5 +51,15 @@ class BookingService implements BookingServiceInterface
   public function getAllActiveReservations(): Collection
   {
     return $this->bookingRepository->getAllActiveReservations();
+  }
+
+  public function findReservationById(int $id): ?Reservation
+  {
+    return $this->bookingRepository->findReservationById($id);
+  }
+
+  public function deleteReservation(Reservation $reservation): bool
+  {
+    return (bool) $reservation->delete();
   }
 }

@@ -12,7 +12,7 @@ class BookingStoreRequest extends FormRequest
 
     protected function getPermission(): string
     {
-        return 'manage_all_orders';
+        return 'manage_reservations';
     }
 
     public function authorize(): bool

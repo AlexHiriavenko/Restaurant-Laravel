@@ -19,8 +19,6 @@ trait AccessAllData
      */
     public function can(): bool
     {
-        $userId = $this->defineUserId();
-
         // Проверяем, есть ли у пользователя необходимое разрешение
         /** @var User $user */
         $user = Auth::user();

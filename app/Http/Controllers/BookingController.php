@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\BookingByUserRequest;
 use App\Http\Requests\BookingStoreRequest;
 use App\Http\Resources\TableResource;
 use App\Http\Resources\ReservationResource;
@@ -30,9 +31,23 @@ class BookingController extends Controller
         return ReservationResource::collection($reservations)->resolve();
     }
 
-    public function getReservationsByUserId(int $userId): JsonResponse|array
+    public function getAllActiveReservations(): JsonResponse|array
     {
+        $reservations = $this->bookingService->getAllActiveReservations();
+        return ReservationResource::collection($reservations)->resolve();
+    }
+
+    public function getUserReservations(BookingByUserRequest $request): JsonResponse|array
+    {
+        $userId = $request->defineUserId();
         $reservations = $this->bookingService->getReservationsByUserId($userId);
+        return ReservationResource::collection($reservations)->resolve();
+    }
+
+    public function getUserActiveReservations(BookingByUserRequest $request): JsonResponse|array
+    {
+        $userId = $request->defineUserId();
+        $reservations = $this->bookingService->getActiveReservationsByUserId($userId);
         return ReservationResource::collection($reservations)->resolve();
     }
 
@@ -43,15 +58,25 @@ class BookingController extends Controller
         return new ReservationResource($reservation);
     }
 
-    public function getActiveReservationsByUser(): JsonResponse|array
+    public function destroy(int $id): JsonResponse
     {
-        $reservations = $this->bookingService->getActiveReservationsByUserId(auth()->id());
-        return ReservationResource::collection($reservations)->resolve();
-    }
+        // Найти бронирование через сервис
+        $reservation = $this->bookingService->findReservationById($id);
 
-    public function getAllActiveReservations(): JsonResponse|array
-    {
-        $reservations = $this->bookingService->getAllActiveReservations();
-        return ReservationResource::collection($reservations)->resolve();
+        if (!$reservation) {
+            return response()->json(['message' => 'Бронирование не найдено.'], 404);
+        }
+
+        // Проверка прав доступа через Policy
+        $this->authorize('delete', $reservation);
+
+        // Выполнение удаления через сервис
+        $deleted = $this->bookingService->deleteReservation($reservation);
+
+        if ($deleted) {
+            return response()->json(['message' => 'Бронирование успешно удалено.']);
+        }
+
+        return response()->json(['message' => 'Не удалось удалить бронирование.'], 500);
     }
 }

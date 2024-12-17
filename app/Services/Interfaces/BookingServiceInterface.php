@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace App\Services\Interfaces;
 
 use Illuminate\Database\Eloquent\Collection;
+use App\Models\Reservation;
 
 interface BookingServiceInterface
 {
@@ -22,4 +23,8 @@ interface BookingServiceInterface
   public function getActiveReservationsByUserId(int $userId): Collection;
 
   public function getAllActiveReservations(): Collection;
+
+  public function findReservationById(int $id): ?Reservation;
+
+  public function deleteReservation(Reservation $reservation): bool;
 }
