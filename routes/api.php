@@ -47,8 +47,7 @@ Route::middleware('auth:sanctum')->group(function () {
 
     Route::prefix('booking')->group(function () {
         Route::get('/tables', [BookingController::class, 'getTables'])->name('tables');
-        Route::get('/index', [BookingController::class, 'index'])->name('reservations')
-            ->middleware('can:manage_reservations');
+        Route::get('/index', [BookingController::class, 'index'])->name('reservations');
         Route::post('/store/user/{id?}', [BookingController::class, 'store'])->name('createReservation');
         Route::get('/active_reservations/user/{id?}', [BookingController::class, 'getUserActiveReservations'])->name('userActiveReservations');
         Route::delete('{id}', [BookingController::class, 'destroy'])->name('deleteReservation');

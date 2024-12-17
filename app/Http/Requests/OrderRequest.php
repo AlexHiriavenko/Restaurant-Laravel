@@ -3,20 +3,24 @@
 namespace App\Http\Requests;
 
 use Illuminate\Foundation\Http\FormRequest;
-use App\Http\Requests\Traits\AccessOwnData;
+use Illuminate\Support\Facades\Auth;
+use App\Models\Order;
 
 class OrderRequest extends FormRequest
 {
-    use AccessOwnData;
-
-    protected function getPermission(): string
-    {
-        return 'manage_all_orders';
-    }
 
     public function authorize(): bool
     {
-        return $this->can();
+        /** @var User $user */
+        $user = Auth::user();
+        $userId = $this->defineUserId();
+
+        return $user->can('view', [Order::class, $userId]);
+    }
+
+    public function defineUserId(): int
+    {
+        return (int) ($this->route('id') ?? Auth::id());
     }
 
     public function rules(): array

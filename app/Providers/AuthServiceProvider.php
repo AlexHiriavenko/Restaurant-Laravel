@@ -8,6 +8,8 @@ use Illuminate\Support\Facades\Gate;
 use App\Models\User;
 use App\Models\Reservation;
 use App\Policies\ReservationPolicy;
+use App\Models\Order;
+use App\Policies\OrderPolicy;
 
 class AuthServiceProvider extends ServiceProvider
 {
@@ -17,8 +19,8 @@ class AuthServiceProvider extends ServiceProvider
      * @var array<class-string, class-string>
      */
     protected $policies = [
-        // 'App\Models\Model' => 'App\Policies\ModelPolicy',
         Reservation::class => ReservationPolicy::class,
+        Order::class => OrderPolicy::class,
     ];
 
     /**

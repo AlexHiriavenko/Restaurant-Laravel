@@ -2,13 +2,14 @@
 
 namespace App\Http\Controllers;
 
-use App\Http\Requests\BookingByUserRequest;
+use Illuminate\Http\JsonResponse;
+use Illuminate\Support\Facades\Auth;
+use App\Models\Reservation;
 use App\Http\Requests\BookingStoreRequest;
 use App\Http\Resources\TableResource;
 use App\Http\Resources\ReservationResource;
 use App\Services\Interfaces\BookingServiceInterface;
-use Illuminate\Http\Request;
-use Illuminate\Http\JsonResponse;
+
 
 class BookingController extends Controller
 {
@@ -27,26 +28,42 @@ class BookingController extends Controller
 
     public function index(): JsonResponse|array
     {
+        // проверка прав доступа через Policy
+        $this->authorize('viewAny', Reservation::class);
+
         $reservations = $this->bookingService->getAllReservations();
         return ReservationResource::collection($reservations)->resolve();
     }
 
     public function getAllActiveReservations(): JsonResponse|array
     {
+        // проверка прав доступа через Policy
+        $this->authorize('viewAny', Reservation::class);
+
         $reservations = $this->bookingService->getAllActiveReservations();
         return ReservationResource::collection($reservations)->resolve();
     }
 
-    public function getUserReservations(BookingByUserRequest $request): JsonResponse|array
+    public function getUserReservations(?int $id = null): JsonResponse|array
     {
-        $userId = $request->defineUserId();
+        $userId = $id ?? Auth::id();
+
+        // проверка прав доступа через Policy
+        $this->authorize('view', [Reservation::class, $userId]);
+
         $reservations = $this->bookingService->getReservationsByUserId($userId);
+
         return ReservationResource::collection($reservations)->resolve();
     }
 
-    public function getUserActiveReservations(BookingByUserRequest $request): JsonResponse|array
+    public function getUserActiveReservations(?int $id = null): JsonResponse|array
     {
-        $userId = $request->defineUserId();
+        $userId = $id ?? Auth::id();
+
+        // Проверка прав доступа через Policy
+        $this->authorize('view', [Reservation::class, $userId]);
+
+        // Получение актуальных бронирований юзера (>= сегодня)
         $reservations = $this->bookingService->getActiveReservationsByUserId($userId);
         return ReservationResource::collection($reservations)->resolve();
     }
@@ -54,7 +71,9 @@ class BookingController extends Controller
     public function store(BookingStoreRequest $request): ReservationResource
     {
         $userId = $request->defineUserId();
+
         $reservation = $this->bookingService->createReservation($userId, $request->validated());
+
         return new ReservationResource($reservation);
     }
 
