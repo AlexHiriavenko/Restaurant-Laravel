@@ -2,6 +2,7 @@
 
 namespace App\Services;
 
+use Illuminate\Support\Facades\DB;
 use App\Repositories\OrderRepository;
 use Illuminate\Database\Eloquent\Collection;
 use App\Models\Order;
@@ -18,37 +19,41 @@ class OrderService
 
     public function createOrder(array $data): Order
     {
-
-        $order = $this->orderRepository->create([
-            'user_id' => auth()->id(),
-            'phone' => $data['phone'],
-            'address' => $data['address'],
-            'type' => $data['deliveryType'],
-            'status' => 'in_progress',
-            'total_price' => $data['total'],
-        ]);
-
-        foreach ($data['dishes'] as $dish) {
-            $orderItem = new OrderItem([
-                'dish_id' => $dish['id'],
-                'name' => $dish['name'],
-                'quantity' => $dish['quantity'],
-                'price' => $dish['price'],
-                'total_price' => $dish['total'],
+        return DB::transaction(function () use ($data) {
+            // Создание заказа
+            $order = $this->orderRepository->create([
+                'user_id' => auth()->id(),
+                'phone' => $data['phone'],
+                'address' => $data['address'],
+                'type' => $data['deliveryType'],
+                'status' => 'in_progress',
+                'total_price' => $data['total'],
             ]);
 
-            $order->items()->save($orderItem);
-
-            foreach ($dish['modifiers'] as $modifier) {
-                $orderItem->modifiers()->create([
-                    'modifier_id' => $modifier['id'],
-                    'name' => $modifier['name'],
-                    'price' => $modifier['price'],
+            // Создание позиций заказа
+            foreach ($data['dishes'] as $dish) {
+                $orderItem = new OrderItem([
+                    'dish_id' => $dish['id'],
+                    'name' => $dish['name'],
+                    'quantity' => $dish['quantity'],
+                    'price' => $dish['price'],
+                    'total_price' => $dish['total'],
                 ]);
-            }
-        }
 
-        return $order;
+                $order->items()->save($orderItem);
+
+                // Создание модификаторов для каждой позиции
+                foreach ($dish['modifiers'] as $modifier) {
+                    $orderItem->modifiers()->create([
+                        'modifier_id' => $modifier['id'],
+                        'name' => $modifier['name'],
+                        'price' => $modifier['price'],
+                    ]);
+                }
+            }
+
+            return $order;
+        });
     }
 
     public function getUserOrders(int $userId): Collection
