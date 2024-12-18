@@ -7,6 +7,7 @@ use App\Http\Controllers\DishController;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\OrderController;
 use App\Http\Controllers\BookingController;
+use App\Http\Controllers\FileController;
 /*
 |--------------------------------------------------------------------------
 | API Routes
@@ -26,6 +27,10 @@ Route::prefix('dishes')->group(function () {
     Route::get('{slug}', [DishController::class, 'findBySlug'])->where('slug', '[a-zA-Z_-]+');
 });
 
+Route::prefix('file')->group(function () {
+    Route::post('/upload', [FileController::class, 'upload'])->name('uploadFile');
+    Route::delete('/delete', [FileController::class, 'delete'])->name('deleteFile');
+});
 
 // Маршруты, требующие авторизации
 Route::middleware('auth:sanctum')->group(function () {
