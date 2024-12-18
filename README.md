@@ -7,8 +7,8 @@ version: Laravel v10.48.22 (PHP v8.2.25)
 1. cd docker
 2. docker-compose build
 3. docker-compose up -d
-4. установить зависимости: `docker-compose -f docker-compose.yml run composer install --ignore-platform-reqs`
-5. скопировать содержимое .env.example в .env: `cp .env.example .env`
+4. скопировать содержимое .env.example в .env: `cd ..`, `cp .env.example .env`, `cd docker` .
+5. установить зависимости: `docker-compose -f docker-compose.yml run composer install --ignore-platform-reqs`
 6. docker-compose exec php php artisan key:generate
 7. docker-compose exec php php artisan migrate --seed
 8. docker-compose exec php php artisan storage:link
