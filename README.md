@@ -14,8 +14,10 @@ version: Laravel v10.48.22 (PHP v8.2.25)
 8. docker-compose exec php php artisan storage:link
 9. для wsl ubuntu или linux выполнить команду из корня проекта (вернитесь из docker в корень `cd ..`): <br>
    sudo chmod 777 -R./
-10. перейти на http://localhost:8080/
-11. для phpMyAdmin: http://localhost:8081/ ; user: root, pwd: root.
+10. выполнить npm i
+11. выполнить npm run dev
+12. перейти на http://localhost:8080/
+13. для phpMyAdmin: http://localhost:8081/ ; user: root, pwd: root.
 
 ## Примеры Полезных команд artisan:
 
