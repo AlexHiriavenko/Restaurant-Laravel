@@ -2,10 +2,11 @@
 
 namespace App\Services;
 
+use App\Services\Interfaces\FileServiceInterface;
 use Illuminate\Http\UploadedFile;
 use Illuminate\Support\Facades\Storage;
 
-class FileService
+class FileService implements FileServiceInterface
 {
   protected string $disk;
 
@@ -39,5 +40,19 @@ class FileService
     $disk = Storage::disk($this->disk);
 
     return $disk->url($path);
+  }
+
+  /**
+   * Обновление файла: удаляет старый и загружает новый.
+   */
+  public function update(UploadedFile $file, ?string $oldPath, string $path): string
+  {
+    // Удаляем старый файл, если он существует
+    if ($oldPath) {
+      $this->delete($oldPath);
+    }
+
+    // Загружаем новый файл
+    return $this->upload($file, $path);
   }
 }
