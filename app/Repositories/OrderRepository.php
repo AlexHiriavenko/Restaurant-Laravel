@@ -4,8 +4,9 @@ namespace App\Repositories;
 
 use Illuminate\Database\Eloquent\Collection;
 use App\Models\Order;
+use App\Repositories\Interfaces\OrderRepositoryInterface;
 
-class OrderRepository
+class OrderRepository implements OrderRepositoryInterface
 {
     public function create(array $data): Order
     {

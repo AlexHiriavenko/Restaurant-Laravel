@@ -7,8 +7,9 @@ use App\Repositories\OrderRepository;
 use Illuminate\Database\Eloquent\Collection;
 use App\Models\Order;
 use App\Models\OrderItem;
+use App\Services\Interfaces\OrderServiceInterface;
 
-class OrderService
+class OrderService implements OrderServiceInterface
 {
     private $orderRepository;
 

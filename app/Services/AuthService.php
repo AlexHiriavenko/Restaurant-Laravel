@@ -6,11 +6,10 @@ use Illuminate\Support\Facades\Auth;
 use App\Models\User;
 use Carbon\Carbon;
 use App\Exceptions\UnauthorizedException;
+use App\Services\Interfaces\AuthServiceInterface;
 use Illuminate\Support\Facades\Hash;
-use Illuminate\Support\Facades\Storage;
-use Illuminate\Support\Str;
 
-class AuthService
+class AuthService implements AuthServiceInterface
 {
     public function login(array $credentials, bool $rememberMe): array
     {
@@ -53,11 +52,6 @@ class AuthService
     public function register(array $data): User
     {
         $avatarPath = null;
-
-        // Если аватар передан, сохранить его
-        // if (!empty($data['avatar'])) {
-        //     $avatarPath = Storage::put('avatars', $data['avatar']);
-        // }
 
         // Создание пользователя
         return User::create([
