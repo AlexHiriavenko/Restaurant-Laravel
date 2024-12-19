@@ -27,20 +27,4 @@ class RedirectIfAuthenticated
 
         return $next($request);
     }
-
-    // public function handle(Request $request, Closure $next, string ...$guards): Response
-    // {
-    //     $guards = empty($guards) ? [null] : $guards;
-
-    //     foreach ($guards as $guard) {
-    //         if (Auth::guard($guard)->check()) {
-    //             return response()->json([
-    //                 'message' => 'You are already logged in.',
-    //                 'user' => Auth::guard($guard)->user(),
-    //             ], 403);
-    //         }
-    //     }
-
-    //     return $next($request);
-    // }
 }
