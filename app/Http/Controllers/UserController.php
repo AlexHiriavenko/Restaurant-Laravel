@@ -49,37 +49,18 @@ class UserController extends Controller
     }
 
     /**
-     * Обновить роль пользователя.
-     */
-    // public function updateRole(Request $request)
-    // {
-    //     $request->validate([
-    //         'user_id' => 'required|exists:users,id',
-    //         'role_id' => 'required|exists:roles,id',
-    //     ]);
-
-    //     $this->userService->updateRole($request->input('user_id'), $request->input('role_id'));
-
-    //     if ($request->expectsJson()) {
-    //         return response()->json(['message' => 'Role updated successfully']);
-    //     }
-
-    //     return redirect()->route('users.index')->with('success', 'Role updated successfully!');
-    // }
-
-    /**
      * Показать страницу управления ролями пользователей.
      */
     public function showUpdateRolePage(Request $request)
     {
-        $email = $request->input('email', null); // Получаем email или null
-        $users = $this->userService->getByEmail($email);
+        $searchText = $request->input('searchText', null); // Получаем email или null
+        $users = $this->userService->getByInputs($searchText);
         $roles = $this->roleService->getAllRoles();
 
         return view('users.update-role', [
             'users' => $users,
             'roles' => $roles,
-            'email' => $email,
+            'searchText' => $searchText,
         ]);
     }
 

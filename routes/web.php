@@ -24,10 +24,11 @@ Route::get('/categories', [CategoryController::class, 'index'])->name('categorie
 Route::get('/categories/{id}', [CategoryController::class, 'show'])->name('categories.show');
 
 Route::middleware(['auth', 'role'])->group(function () {
-    // Маршруты для дашборда
     Route::get('/dashboard',  fn() => view('dashboard'))->name('dashboard');
 
     Route::get('/users',  fn() => view('users.manage-users'))->name('users');
+    Route::get('/users/update-role', [UserController::class, 'showUpdateRolePage'])->name('users.update-role');
+    Route::post('/users/update-role', [UserController::class, 'updateRole'])->name('users.update-role.post');
 
     // Маршруты для профиля
     Route::prefix('/profile')->group(function () {
@@ -36,6 +37,3 @@ Route::middleware(['auth', 'role'])->group(function () {
         Route::delete('/', [ProfileController::class, 'destroy'])->name('profile.destroy');
     });
 });
-
-Route::get('/users/update-role', [UserController::class, 'showUpdateRolePage'])->name('users.update-role');
-Route::post('/users/update-role', [UserController::class, 'updateRole'])->name('users.update-role.post');

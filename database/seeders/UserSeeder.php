@@ -7,6 +7,7 @@ use Illuminate\Database\Seeder;
 use App\Models\User;
 use App\Enums\RoleEnum;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\Schema;
 
 class UserSeeder extends Seeder
 {
@@ -14,8 +15,12 @@ class UserSeeder extends Seeder
     {
         // Отключаем проверку внешних ключей
         DB::statement('SET FOREIGN_KEY_CHECKS=0;');
-        // Очистка таблицы перед заполнением
-        User::truncate();
+
+        // Проверяем, существует ли таблица
+        if (Schema::hasTable('users')) {
+            // Очистка таблицы перед заполнением
+            User::truncate();
+        }
 
         $superAdminRole = RoleEnum::find(RoleEnum::SuperAdmin->value);
         $adminRole = RoleEnum::find(RoleEnum::Admin->value);
@@ -53,5 +58,8 @@ class UserSeeder extends Seeder
             'avatar' => 'imgs/avatars/client.png',
             'role_id' => $clientRole->id,
         ]);
+
+        // Включаем проверки внешних ключей обратно
+        DB::statement('SET FOREIGN_KEY_CHECKS=1;');
     }
 }
