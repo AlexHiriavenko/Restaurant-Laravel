@@ -24,7 +24,7 @@ class UserRepository
      * @param array $conditions Условия для поиска с LIKE (колонка => значение)
      * @return \Illuminate\Database\Eloquent\Collection
      */
-    public function getByLike(array $conditions): Collection
+    public function getByLike(array $conditions, int $perPage = 15)
     {
         $query = User::query();
 
@@ -34,8 +34,9 @@ class UserRepository
             }
         }
 
-        return $query->get();
+        return $query->paginate($perPage);
     }
+
 
     /**
      * Обновить данные пользователя.

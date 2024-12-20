@@ -3,18 +3,21 @@
     <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
       <h1 class="text-2xl font-bold mb-6 text-gray-800">Manage Users Roles</h1>
       <h2 class="text-lg text-blue-500 mb-4"><a href="{{ route('users') }}">Back to: Manage Users</a></h2>
-      {{-- Сообшение об успехе --}}
-        @if(session('success'))
-            <div class="bg-green-100 text-green-700 border border-green-400 rounded px-4 py-3 mb-4">
-                {{ session('success') }}
-            </div>
+
+      {{-- Сообщение об успехе --}}
+      @if(session('success'))
+        <div class="bg-green-100 text-green-700 border border-green-400 rounded px-4 py-3 mb-4">
+          {{ session('success') }}
+        </div>
       @endif
-      {{-- Сообшение об ошибке --}}
+
+      {{-- Сообщение об ошибке --}}
       @if(session('error'))
         <div class="bg-red-100 text-red-700 border border-red-400 rounded px-4 py-3 mb-4">
           {{ session('error') }}
         </div>
       @endif
+
       {{-- Форма поиска --}}
       <form action="{{ route('users.update-role') }}" method="GET" class="mb-6">
         <div class="mb-4">
@@ -75,13 +78,17 @@
                           Update Role
                         </button>
                       </div>
-
                     </form>
                   </td>
                 </tr>
               @endforeach
             </tbody>
           </table>
+        </div>
+
+        {{-- Навигация по страницам --}}
+        <div class="mt-6">
+          {{ $users->links() }}
         </div>
       @endif
     </div>

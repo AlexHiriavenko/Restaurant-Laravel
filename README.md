@@ -14,8 +14,8 @@ version: Laravel v10.48.22 (PHP v8.2.25)
 8. docker-compose exec php php artisan storage:link
 9. для wsl ubuntu или linux выполнить команду из корня проекта (вернитесь из docker в корень `cd ..`): <br>
    sudo chmod 777 -R./
-10. выполнить npm i
-11. выполнить npm run dev
+10. из корня проекта выполнить npm i
+11. из корня проекта выполнить npm run dev
 12. перейти на http://localhost:8080/
 13. для phpMyAdmin: http://localhost:8081/ ; user: root, pwd: root.
 
@@ -27,3 +27,9 @@ version: Laravel v10.48.22 (PHP v8.2.25)
 -   docker-compose exec php php artisan db:seed
 -   docker-compose exec php php artisan db:seed --class=RoleSeeder
 -   docker-compose exec php php artisan db:seed --class=UserSeeder
+
+## Юзеры из бд
+
+-   email: admin@admin.com; pwd: admin;
+-   email: manager@manager.com; pwd: manager;
+-   email: client@client.com; pwd: client;

@@ -52,9 +52,9 @@ class UserService
      * @param string|null $email Часть email для поиска
      * @return \Illuminate\Database\Eloquent\Collection
      */
-    public function getByInputs(string|null $inputValue)
+    public function getByInputs(string|null $inputValue, int $perPage = 5)
     {
         $inputValue = $inputValue ?? '';
-        return $this->userRepository->getByLike(['email' => $inputValue, 'name' => $inputValue]);
+        return $this->userRepository->getByLike(['email' => $inputValue, 'name' => $inputValue], $perPage);
     }
 }

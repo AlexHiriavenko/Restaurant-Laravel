@@ -54,7 +54,9 @@ class UserController extends Controller
     public function showUpdateRolePage(Request $request)
     {
         $searchText = $request->input('searchText', null); // Получаем email или null
-        $users = $this->userService->getByInputs($searchText);
+        $perPage = $request->input('perPage', 5); // Количество записей на страницу
+
+        $users = $this->userService->getByInputs($searchText, $perPage);
         $roles = $this->roleService->getAllRoles();
 
         return view('users.update-role', [
