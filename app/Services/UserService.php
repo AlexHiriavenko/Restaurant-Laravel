@@ -3,15 +3,18 @@
 namespace App\Services;
 
 use App\Models\User;
+use App\Repositories\UserRepository;
 use Illuminate\Http\UploadedFile;
 
 class UserService
 {
   protected FileService $fileService;
+  protected UserRepository $userRepository;
 
-  public function __construct(FileService $fileService)
+  public function __construct(FileService $fileService, UserRepository $userRepository)
   {
     $this->fileService = $fileService;
+    $this->userRepository = $userRepository;
   }
 
   /**
@@ -30,5 +33,27 @@ class UserService
     $user->save();
 
     return $uploadedPath;
+  }
+
+  /**
+   * Обновление роли пользователя.
+   */
+  public function updateRole(int $userId, int $roleId): void
+  {
+    $this->userRepository->update($userId, ['role_id' => $roleId]);
+  }
+
+  /**
+   * Получение пользователей по email.
+   */
+  /**
+   * Получить пользователей по email.
+   *
+   * @param string|null $email Часть email для поиска
+   * @return \Illuminate\Database\Eloquent\Collection
+   */
+  public function getByEmail(string|null $email)
+  {
+    return $this->userRepository->getByLike(['email' => $email ?? '']);
   }
 }

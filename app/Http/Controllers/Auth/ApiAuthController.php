@@ -23,12 +23,12 @@ class ApiAuthController extends Controller
         // Получаем валидированные данные
         $validated = $request->validated();
 
-        // Извлекаем только необходимые поля для авторизации (убирается )
+        // Извлекаем только необходимые поля для авторизации
         $credentials = collect($validated)->only(['email', 'password'])->toArray();
 
         // Вызываем сервис для авторизации и получения токена
         $tokenData = $this->authService->login(
-            $credentials, // Передаем только email и password
+            $credentials, // тут передаем только email и password
             $request->boolean('rememberMe', false) // rememberMe (по умолчанию false)
         );
 

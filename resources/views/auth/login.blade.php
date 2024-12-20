@@ -2,6 +2,12 @@
     <!-- Session Status -->
     <x-auth-session-status class="mb-4" :status="session('status')" />
 
+    <!-- Ошибка доступа -->
+    @if ($errors->has('message'))
+        <div class="text-red-500 font-bold">
+            {{ $errors->first('message') }}
+        </div>
+    @endif
     <form method="POST" action="{{ route('login') }}">
         @csrf
 
@@ -45,3 +51,5 @@
         </div>
     </form>
 </x-guest-layout>
+
+{{ dd(session()->all()) }}
