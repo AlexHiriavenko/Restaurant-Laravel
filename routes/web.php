@@ -35,7 +35,7 @@ Route::middleware(['auth', 'role'])->group(function () {
         Route::patch('/', [ProfileController::class, 'update'])->name('profile.update');
         Route::delete('/', [ProfileController::class, 'destroy'])->name('profile.destroy');
     });
-
-    Route::get('/users/update-role', [UserController::class, 'showUpdateRolePage'])->name('users.update-role');
-    Route::post('/users/update-role', [UserController::class, 'updateRole'])->name('users.upr');
 });
+
+Route::get('/users/update-role', [UserController::class, 'showUpdateRolePage'])->name('users.update-role');
+Route::post('/users/update-role', [UserController::class, 'updateRole'])->name('users.update-role.post');

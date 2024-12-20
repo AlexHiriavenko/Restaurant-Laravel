@@ -88,7 +88,6 @@ class UserController extends Controller
      */
     public function updateRole(Request $request)
     {
-        dd($request->all());
 
         $request->validate([
             'user_id' => 'required|exists:users,id',
@@ -97,6 +96,6 @@ class UserController extends Controller
 
         $this->userService->updateRole($request->input('user_id'), $request->input('role_id'));
 
-        // return redirect()->route('users.update-role')->with('success', 'Role updated successfully!');
+        return redirect()->route('users.update-role')->with('success', 'Role updated successfully!');
     }
 }
