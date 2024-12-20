@@ -3,11 +3,12 @@
 namespace Database\Seeders;
 
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Schema;
 use Illuminate\Database\Seeder;
 use App\Models\User;
 use App\Enums\RoleEnum;
 use Illuminate\Support\Facades\Hash;
-use Illuminate\Support\Facades\Schema;
+
 
 class UserSeeder extends Seeder
 {
@@ -57,6 +58,12 @@ class UserSeeder extends Seeder
             'password' => Hash::make('client'),
             'avatar' => 'imgs/avatars/client.png',
             'role_id' => $clientRole->id,
+        ]);
+
+        User::factory(100)->create([
+            'password' => Hash::make('123456'), // Один пароль для всех
+            'avatar' => null, // без аватара
+            'role_id' => $clientRole->id, // у все Роль "Client"
         ]);
 
         // Включаем проверки внешних ключей обратно

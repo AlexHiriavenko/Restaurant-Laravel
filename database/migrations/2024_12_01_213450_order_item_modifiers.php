@@ -12,7 +12,7 @@ return new class extends Migration
             $table->id();
             $table->foreignId('order_item_id')->constrained('order_items')->onDelete('cascade'); // Связь с позицией заказа
             $table->foreignId('modifier_id')->constrained('modifiers')->onDelete('cascade'); // Связь с модификатором
-            $table->string('name'); // Цена модификатора
+            $table->string('name'); // Название модификатора
             $table->decimal('price', 10, 2); // Цена модификатора
             $table->timestamps();
         });
