@@ -10,6 +10,7 @@ use App\Models\Reservation;
 use App\Policies\ReservationPolicy;
 use App\Models\Order;
 use App\Policies\OrderPolicy;
+use App\Policies\UserPolicy;
 
 class AuthServiceProvider extends ServiceProvider
 {
@@ -21,6 +22,7 @@ class AuthServiceProvider extends ServiceProvider
     protected $policies = [
         Reservation::class => ReservationPolicy::class,
         Order::class => OrderPolicy::class,
+        User::class => UserPolicy::class
     ];
 
     /**
@@ -49,6 +51,10 @@ class AuthServiceProvider extends ServiceProvider
 
         Gate::define('view_reports', function (User $user) {
             return $user->hasPermission('view_reports');
+        });
+
+        Gate::define('manage_users', function (User $user) {
+            return $user->hasPermission('manage_users');
         });
     }
 }

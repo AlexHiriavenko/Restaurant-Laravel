@@ -75,6 +75,9 @@ class UserController extends Controller
             'role_id' => 'required|exists:roles,id',
         ]);
 
+        // проверка есть ли права на изенение роли
+        $this->authorize('updateAny', User::class);
+
         $this->userService->updateRole($request->input('user_id'), $request->input('role_id'));
 
         return redirect()->route('users.update-role')->with('success', 'Role updated successfully!');

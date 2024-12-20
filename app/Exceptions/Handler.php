@@ -30,13 +30,20 @@ class Handler extends ExceptionHandler
         });
     }
 
-    public function render($request, \Throwable $exception): Response
+    public function render($request, Throwable $exception): Response
     {
         if ($exception instanceof AuthorizationException) {
-            return response()->json([
-                'success' => false,
-                'message' => 'Недостатньо прав доступу',
-            ], 403);
+            if ($request->expectsJson()) {
+                // Для API-запросов
+                return response()->json([
+                    'success' => false,
+                    'message' => 'Недостатньо прав доступу',
+                ], 403);
+            } else {
+                // Для веб-запросов (Blade)
+                return redirect()->back()
+                    ->with('error', 'Недостатньо прав доступу');
+            }
         }
 
         return parent::render($request, $exception);
