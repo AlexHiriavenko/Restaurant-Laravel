@@ -4,10 +4,12 @@ namespace App\Services;
 
 use Illuminate\Support\Facades\DB;
 use App\Repositories\OrderRepository;
+use App\Services\Interfaces\OrderServiceInterface;
 use Illuminate\Database\Eloquent\Collection;
 use App\Models\Order;
 use App\Models\OrderItem;
-use App\Services\Interfaces\OrderServiceInterface;
+use App\Enums\OrderStatusEnum;
+use Illuminate\Pagination\LengthAwarePaginator;
 
 class OrderService implements OrderServiceInterface
 {
@@ -60,5 +62,16 @@ class OrderService implements OrderServiceInterface
     public function getUserOrders(int $userId): Collection
     {
         return $this->orderRepository->getOrdersByUserId($userId);
+    }
+
+    public function updateStatus(int $orderId, OrderStatusEnum $status): void
+    {
+        $this->orderRepository->update($orderId, ['status' => $status->value]);
+    }
+
+    public function getOrders(?OrderStatusEnum $status, ?string $startDate, ?string $endDate, int $perPage = 5): LengthAwarePaginator
+    {
+        $status = $status?->value ?? null;
+        return $this->orderRepository->getOrders($status, $startDate, $endDate, $perPage);
     }
 }

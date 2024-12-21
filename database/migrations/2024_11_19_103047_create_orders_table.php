@@ -10,11 +10,11 @@ return new class extends Migration {
         Schema::create('orders', function (Blueprint $table) {
             $table->id();
             $table->foreignId('user_id')->constrained('users')->onDelete('cascade'); // Пользователь, сделавший заказ
-            $table->string('phone');
-            $table->string('address')->nullable(); // Адрес доставки (nullable для самовывоза)
-            $table->enum('type', ['delivery', 'pickup']); // Тип заказа (доставка или самовывоз)
-            $table->enum('status', ['in_progress', 'done'])->default('in_progress'); // Статус заказа
-            $table->decimal('total_price', 10, 2); // Общая сумма заказа
+            $table->string('phone');                                                 // tel   
+            $table->string('address')->nullable();                                   // Адрес доставки (nullable для самовывоза)
+            $table->string('type');                                                  // Тип заказа (доставка или самовывоз)
+            $table->string('status')->default('in_progress');                        // Статус заказа
+            $table->decimal('total_price', 10, 2);                                   // Общая сумма заказа
             $table->timestamps();
         });
     }
