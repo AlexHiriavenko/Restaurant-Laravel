@@ -60,4 +60,20 @@ class DishService implements DishServiceInterface
 
     return $dish;
   }
+
+  public function createDish(array $data, ?UploadedFile $file, array $modifierIds = []): Dish
+  {
+    if ($file) {
+      $uploadPath = 'imgs/categories/' . ($data['category_slug'] ?? 'uncategorized');
+      $data['img'] = $this->fileService->upload($file, $uploadPath);
+    }
+
+    $dish = $this->dishRepository->create($data);
+
+    if (!empty($modifierIds)) {
+      $dish->modifiers()->sync($modifierIds);
+    }
+
+    return $dish;
+  }
 }

@@ -17,4 +17,6 @@ interface DishRepositoryInterface
   public function getByDiscount(): Collection;
 
   public function getDishesQuery(?string $search): Builder;
+
+  public function create(array $data): Dish;
 }

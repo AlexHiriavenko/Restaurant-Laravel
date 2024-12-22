@@ -11,11 +11,13 @@ use App\Policies\UserPolicy;
 use App\Policies\DishPolicy;
 use App\Policies\ReservationPolicy;
 use App\Policies\OrderPolicy;
+use App\Policies\ReportsPolicy;
 
 use App\Models\User;
 use App\Models\Dish;
 use App\Models\Reservation;
 use App\Models\Order;
+
 
 class AuthServiceProvider extends ServiceProvider
 {
@@ -28,7 +30,8 @@ class AuthServiceProvider extends ServiceProvider
         Reservation::class => ReservationPolicy::class,
         Order::class => OrderPolicy::class,
         User::class => UserPolicy::class,
-        Dish::class => DishPolicy::class
+        Dish::class => DishPolicy::class,
+        'reports' => ReportsPolicy::class,
     ];
 
     /**

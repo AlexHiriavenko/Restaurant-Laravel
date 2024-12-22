@@ -16,6 +16,8 @@ class AnalyticsController extends Controller
 
   public function sales(Request $request)
   {
+    $this->authorize('view', 'reports');
+
     $startDate = $request->input('start_date', now()->startOfMonth()->toDateString());
     $endDate = $request->input('end_date', now()->endOfMonth()->toDateString());
 
@@ -26,6 +28,8 @@ class AnalyticsController extends Controller
 
   public function reservations(Request $request)
   {
+    $this->authorize('view', 'reports');
+
     $startDate = $request->input('start_date', now()->startOfMonth()->toDateString());
     $endDate = $request->input('end_date', now()->endOfMonth()->toDateString());
 

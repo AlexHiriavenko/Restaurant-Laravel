@@ -33,15 +33,9 @@ Route::middleware('auth:sanctum')->group(function () {
         Route::post('/avatar', [UserController::class, 'updateAvatar']);
     });
 
-    Route::prefix('dishes')->group(function () {
-        Route::post('/', [DishController::class, 'store'])->name('createDish');
-        Route::put('{id}', [DishController::class, 'update'])->name('updateDish');
-        Route::delete('{id}', [DishController::class, 'destroy'])->name('deleteDish');
-    });
-
     Route::prefix('orders')->group(function () {
         Route::get('/user/{id?}', [OrderController::class, 'getUserOrders'])->name('userOrders');
-        Route::post('/store', [OrderController::class, 'store'])->name('store')->name('saveOrder');
+        Route::post('/store', [OrderController::class, 'store'])->name('saveOrder');
     });
 
     Route::prefix('booking')->group(function () {
@@ -50,5 +44,10 @@ Route::middleware('auth:sanctum')->group(function () {
         Route::post('/store/user/{id?}', [BookingController::class, 'store'])->name('createReservation');
         Route::get('/active_reservations/user/{id?}', [BookingController::class, 'getUserActiveReservations'])->name('userActiveReservations');
         Route::delete('{id}', [BookingController::class, 'destroy'])->name('deleteReservation');
+    });
+
+    Route::prefix('dishes')->group(function () {
+        Route::post('/', [DishController::class, 'store'])->name('createDish');
+        Route::put('{id}', [DishController::class, 'update'])->name('updateDish');
     });
 });

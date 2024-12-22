@@ -44,16 +44,21 @@ Route::middleware(['auth', 'role'])->group(function () {
     Route::prefix('/orders')->group(function () {
         Route::get('/search', [OrderController::class, 'searchOrders'])->name('orders.search');
         Route::patch('/update-status', [OrderController::class, 'updateStatus'])->name('orders.update-status');
-        Route::get('/orders',  fn() => view('orders.orders'))->name('orders');
+        Route::get('/navigation',  fn() => view('orders.orders'))->name('orders');
     });
 
     Route::prefix('/dishes')->group(function () {
+        Route::get('/navigation', fn() => view('dishes.nav'))->name('dishes.manage');
         Route::get('/search', [DishController::class, 'index'])->name('dishes.search');
         Route::get('{id}', [DishController::class, 'show'])->name('dishes.show')->where('id', '[0-9]+');
         Route::post('{id}', [DishController::class, 'update'])->name('dishes.update')->where('id', '[0-9]+');
+        Route::get('/create', [DishController::class, 'create'])->name('dishes.create');
+        Route::post('/create', [DishController::class, 'store'])->name('dishes.store');
     });
 
-    Route::get('/analytics', fn() => view('analytics.index'))->name('analytics');
-    Route::get('/analytics/sales', [AnalyticsController::class, 'sales'])->name('analytics.sales');
-    Route::get('/analytics/reservations', [AnalyticsController::class, 'reservations'])->name('analytics.reservations');
+    Route::prefix('/analytics')->group(function () {
+        Route::get('/', fn() => view('analytics.index'))->name('analytics');
+        Route::get('/sales', [AnalyticsController::class, 'sales'])->name('analytics.sales');
+        Route::get('/reservations', [AnalyticsController::class, 'reservations'])->name('analytics.reservations');
+    });
 });

@@ -20,4 +20,6 @@ interface DishServiceInterface
   public function getByDiscount(): Collection;
 
   public function updateDish(int $id, array $data, UploadedFile|null $file): Dish;
+
+  public function createDish(array $data, ?UploadedFile $file, array $modifierIds = []): Dish;
 }

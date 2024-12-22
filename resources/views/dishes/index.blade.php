@@ -1,4 +1,10 @@
 <x-app-layout>
+    {{-- Сообщение об ошибке --}}
+    @if (session('error'))
+        <div class="bg-red-100 text-red-700 border border-red-400 rounded px-4 py-3 mb-4">
+            {{ session('error') }}
+        </div>
+    @endif
     <div class="py-6">
         <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
             <h1 class="text-2xl font-bold mb-6 text-gray-800">Dishes</h1>
