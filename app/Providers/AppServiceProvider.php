@@ -3,18 +3,26 @@
 namespace App\Providers;
 
 use Illuminate\Support\ServiceProvider;
+
 use App\Repositories\CategoryRepository;
 use App\Services\CategoryService;
 use App\Repositories\Interfaces\CategoryRepositoryInterface;
 use App\Services\Interfaces\CategoryServiceInterface;
+
 use App\Repositories\DishRepository;
 use App\Services\DishService;
-use App\Repositories\BookingRepository;
-use App\Services\BookingService;
 use App\Repositories\Interfaces\DishRepositoryInterface;
 use App\Services\Interfaces\DishServiceInterface;
+
+use App\Repositories\BookingRepository;
+use App\Services\BookingService;
 use App\Repositories\Interfaces\BookingRepositoryInterface;
 use App\Services\Interfaces\BookingServiceInterface;
+
+use App\Repositories\OrderRepository;
+use App\Services\OrderService;
+use App\Repositories\Interfaces\OrderRepositoryInterface;
+use App\Services\Interfaces\OrderServiceInterface;
 
 class AppServiceProvider extends ServiceProvider
 {
@@ -32,6 +40,9 @@ class AppServiceProvider extends ServiceProvider
 
         $this->app->bind(DishRepositoryInterface::class, DishRepository::class);
         $this->app->bind(DishServiceInterface::class, DishService::class);
+
+        $this->app->bind(OrderRepositoryInterface::class, OrderRepository::class);
+        $this->app->bind(OrderServiceInterface::class, OrderService::class);
     }
 
     /**
