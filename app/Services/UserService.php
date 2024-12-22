@@ -44,9 +44,6 @@ class UserService
     }
 
     /**
-     * Получение пользователей по email.
-     */
-    /**
      * Получить пользователей по email.
      *
      * @param string|null $email Часть email для поиска

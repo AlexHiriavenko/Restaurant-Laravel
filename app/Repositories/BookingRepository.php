@@ -8,6 +8,7 @@ use App\Models\Table;
 use App\Models\Reservation;
 use Illuminate\Database\Eloquent\Collection;
 use App\Repositories\Interfaces\BookingRepositoryInterface;
+use Carbon\Carbon;
 
 class BookingRepository implements BookingRepositoryInterface
 {
@@ -60,5 +61,13 @@ class BookingRepository implements BookingRepositoryInterface
   public function findReservationById(int $id): ?Reservation
   {
     return Reservation::find($id);
+  }
+
+  public function getReservationsByPeriod(string $startDate, string $endDate): Collection
+  {
+    return Reservation::whereBetween('reservation_date', [
+      Carbon::parse($startDate)->toDateString(),
+      Carbon::parse($endDate)->toDateString()
+    ])->get();
   }
 }

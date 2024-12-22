@@ -6,6 +6,7 @@ use App\Http\Controllers\CategoryController;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\OrderController;
 use App\Http\Controllers\DishController;
+use App\Http\Controllers\AnalyticsController;
 
 /*
 |--------------------------------------------------------------------------
@@ -51,4 +52,8 @@ Route::middleware(['auth', 'role'])->group(function () {
         Route::get('{id}', [DishController::class, 'show'])->name('dishes.show')->where('id', '[0-9]+');
         Route::post('{id}', [DishController::class, 'update'])->name('dishes.update')->where('id', '[0-9]+');
     });
+
+    Route::get('/analytics', fn() => view('analytics.index'))->name('analytics');
+    Route::get('/analytics/sales', [AnalyticsController::class, 'sales'])->name('analytics.sales');
+    Route::get('/analytics/reservations', [AnalyticsController::class, 'reservations'])->name('analytics.reservations');
 });
