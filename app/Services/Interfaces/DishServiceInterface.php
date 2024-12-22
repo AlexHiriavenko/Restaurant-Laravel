@@ -2,9 +2,10 @@
 
 namespace App\Services\Interfaces;
 
-use Illuminate\Contracts\Pagination\CursorPaginator;
 use Illuminate\Database\Eloquent\Collection;
 use App\Models\Dish;
+use Illuminate\Contracts\Database\Eloquent\Builder;
+use Illuminate\Http\UploadedFile;
 
 interface DishServiceInterface
 {
@@ -12,9 +13,11 @@ interface DishServiceInterface
 
   public function findBySlug(string $slug): Dish;
 
-  public function getDishesWithPagination(?string $search, int $perPage): CursorPaginator;
+  public function getDishesQuery(?string $search): Builder;
 
   public function getByCategory(int $categoryId): Collection;
 
   public function getByDiscount(): Collection;
+
+  public function updateDish(int $id, array $data, UploadedFile|null $file): Dish;
 }

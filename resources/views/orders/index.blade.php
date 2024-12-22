@@ -108,7 +108,7 @@
                                         <form method="POST" action="{{ route('orders.update-status') }}"
                                             class="space-y-2">
                                             @csrf
-                                            @method('PUT')
+                                            @method('PATCH')
                                             <input type="hidden" name="order_id" value="{{ $order->id }}">
                                             <div class="flex items-center">
                                                 <select name="status"

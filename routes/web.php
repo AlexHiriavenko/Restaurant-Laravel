@@ -5,6 +5,7 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\CategoryController;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\OrderController;
+use App\Http\Controllers\DishController;
 
 /*
 |--------------------------------------------------------------------------
@@ -41,7 +42,13 @@ Route::middleware(['auth', 'role'])->group(function () {
 
     Route::prefix('/orders')->group(function () {
         Route::get('/search', [OrderController::class, 'searchOrders'])->name('orders.search');
-        Route::put('/update-status', [OrderController::class, 'updateStatus'])->name('orders.update-status');
+        Route::patch('/update-status', [OrderController::class, 'updateStatus'])->name('orders.update-status');
         Route::get('/orders',  fn() => view('orders.orders'))->name('orders');
+    });
+
+    Route::prefix('/dishes')->group(function () {
+        Route::get('/search', [DishController::class, 'index'])->name('dishes.search');
+        Route::get('{id}', [DishController::class, 'show'])->name('dishes.show')->where('id', '[0-9]+');
+        Route::post('{id}', [DishController::class, 'update'])->name('dishes.update')->where('id', '[0-9]+');
     });
 });

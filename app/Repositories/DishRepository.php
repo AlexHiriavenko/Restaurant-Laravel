@@ -4,8 +4,8 @@ namespace App\Repositories;
 
 use App\Models\Dish;
 use App\Repositories\Interfaces\DishRepositoryInterface;
-use Illuminate\Contracts\Pagination\CursorPaginator;
 use Illuminate\Database\Eloquent\Collection;
+use Illuminate\Database\Eloquent\Builder;
 
 class DishRepository implements DishRepositoryInterface
 {
@@ -31,7 +31,7 @@ class DishRepository implements DishRepositoryInterface
       ->get();
   }
 
-  public function getDishesWithPagination(?string $search, int $perPage): CursorPaginator
+  public function getDishesQuery(?string $search): Builder
   {
     $query = Dish::query()->with('category');
 
@@ -45,6 +45,6 @@ class DishRepository implements DishRepositoryInterface
       });
     }
 
-    return $query->orderBy('id')->cursorPaginate($perPage);
+    return $query->orderBy('id');
   }
 }

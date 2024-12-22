@@ -2,7 +2,7 @@
 
 namespace App\Repositories\Interfaces;
 
-use Illuminate\Contracts\Pagination\CursorPaginator;
+use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Collection;
 use App\Models\Dish;
 
@@ -16,5 +16,5 @@ interface DishRepositoryInterface
 
   public function getByDiscount(): Collection;
 
-  public function getDishesWithPagination(?string $search, int $perPage): CursorPaginator;
+  public function getDishesQuery(?string $search): Builder;
 }
