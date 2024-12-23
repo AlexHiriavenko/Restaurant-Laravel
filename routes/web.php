@@ -7,6 +7,7 @@ use App\Http\Controllers\UserController;
 use App\Http\Controllers\OrderController;
 use App\Http\Controllers\DishController;
 use App\Http\Controllers\AnalyticsController;
+use Barryvdh\DomPDF\Facade\Pdf;
 
 /*
 |--------------------------------------------------------------------------
@@ -63,11 +64,7 @@ Route::middleware(['auth', 'role'])->group(function () {
     });
 });
 
-// тестовая отправка имейл
-Route::get('/test-email', function () {
-    \Illuminate\Support\Facades\Mail::raw('This is a test email.', function ($message) {
-        $message->to('martmarchmartmarch@gmail.com')
-            ->subject('Test Email from Laravel');
-    });
-    return 'Test email has been sent!';
+Route::get('/test-pdf', function () {
+    $pdf = PDF::loadHTML('<h1>Тестовая страница PDF</h1><p>Это тестовый файл PDF, созданный через dompdf.</p>');
+    return $pdf->stream('test.pdf');
 });
