@@ -12,6 +12,7 @@ use App\Models\OrderItem;
 use App\Models\User;
 use App\Enums\OrderStatusEnum;
 use App\Services\MailService;
+use App\Jobs\SendEmailOrderReady;
 
 class OrderService implements OrderServiceInterface
 {
@@ -85,11 +86,18 @@ class OrderService implements OrderServiceInterface
             $email = 'martmarchmartmarch@gmail.com';
             $userName = $user->name;
 
-            $this->mailService->sendHtmlEmail(
+            // $this->mailService->sendHtmlEmail(
+            //     $email,
+            //     $subject,
+            //     $template,
+            //     ['name' => $userName] // Данные для шаблона
+            // );
+
+            SendEmailOrderReady::dispatch(
                 $email,
                 $subject,
                 $template,
-                ['name' => $userName] // Данные для шаблона
+                ['name' => $userName]
             );
         }
     }
