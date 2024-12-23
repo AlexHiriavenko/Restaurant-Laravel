@@ -26,13 +26,26 @@ class MailService
 
   /**
    * Отправка письма с HTML-шаблоном
+   * $mailService->sendHtmlEmail(
+   * 'получатель@example.com',
+   * 'Заголовок Письма',
+   * 'emails.template', 
+   * ['key' => 'value'],
+   * [storage_path('app/public/imgs/categories/drinks/coffee.jpg')] 
+   * )
    */
-  public function sendHtmlEmail(string $to, string $subject, string $view, array $data = []): bool
+  public function sendHtmlEmail(string $to, string $subject, string $view, array $data = [], array $attachments = []): bool
   {
     try {
-      Mail::send($view, $data, function ($mail) use ($to, $subject) {
-        $mail->to($to)
-          ->subject($subject);
+      Mail::send($view, $data, function ($mail) use ($to, $subject, $attachments) {
+        $mail->to($to)->subject($subject);
+
+        // Если вложения есть, добавляем их
+        if (!empty($attachments)) {
+          foreach ($attachments as $attachment) {
+            $mail->attach($attachment);
+          }
+        }
       });
       return true;
     } catch (\Exception $e) {
