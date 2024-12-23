@@ -3,21 +3,25 @@
 namespace App\Services;
 
 use Illuminate\Support\Facades\DB;
+use Illuminate\Database\Eloquent\Collection;
+use Illuminate\Pagination\LengthAwarePaginator;
 use App\Repositories\OrderRepository;
 use App\Services\Interfaces\OrderServiceInterface;
-use Illuminate\Database\Eloquent\Collection;
 use App\Models\Order;
 use App\Models\OrderItem;
+use App\Models\User;
 use App\Enums\OrderStatusEnum;
-use Illuminate\Pagination\LengthAwarePaginator;
+use App\Services\MailService;
 
 class OrderService implements OrderServiceInterface
 {
     private $orderRepository;
+    private $mailService;
 
-    public function __construct(OrderRepository $orderRepository)
+    public function __construct(OrderRepository $orderRepository, MailService $mailService)
     {
         $this->orderRepository = $orderRepository;
+        $this->mailService = $mailService;
     }
 
     public function createOrder(array $data): Order
@@ -66,7 +70,28 @@ class OrderService implements OrderServiceInterface
 
     public function updateStatus(int $orderId, OrderStatusEnum $status): void
     {
+
+        $order = Order::findOrFail($orderId);
+
         $this->orderRepository->update($orderId, ['status' => $status->value]);
+
+        // Отправка email при завершении заказа
+        if ($status->value === 'done') {
+
+            $subject = 'Order Completed!';
+            $template = 'emails.orderComplete';
+            $user = User::findOrFail($order->user_id);
+            // $email = $user->email;
+            $email = 'martmarchmartmarch@gmail.com';
+            $userName = $user->name;
+
+            $this->mailService->sendHtmlEmail(
+                $email,
+                $subject,
+                $template,
+                ['name' => $userName] // Данные для шаблона
+            );
+        }
     }
 
     public function getOrders(?OrderStatusEnum $status, ?string $startDate, ?string $endDate, int $perPage = 5): LengthAwarePaginator

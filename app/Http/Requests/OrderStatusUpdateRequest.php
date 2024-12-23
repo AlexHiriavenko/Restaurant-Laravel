@@ -10,13 +10,13 @@ class OrderStatusUpdateRequest extends FormRequest
 {
   public function authorize(): bool
   {
-    return true; // Проверка авторизации пользователя
+    return true;
   }
 
   public function rules(): array
   {
     return [
-      'order_id' => 'required|integer|exists:orders,id', // Проверка наличия заказа
+      'order_id' => 'required|integer|exists:orders,id',
       'status' => ['required', 'string', Rule::in(OrderStatusEnum::cases())],
     ];
   }

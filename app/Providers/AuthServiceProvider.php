@@ -2,15 +2,22 @@
 
 namespace App\Providers;
 
+
 use Illuminate\Auth\Notifications\ResetPassword;
 use Illuminate\Foundation\Support\Providers\AuthServiceProvider as ServiceProvider;
 use Illuminate\Support\Facades\Gate;
-use App\Models\User;
-use App\Models\Reservation;
-use App\Policies\ReservationPolicy;
-use App\Models\Order;
-use App\Policies\OrderPolicy;
+
 use App\Policies\UserPolicy;
+use App\Policies\DishPolicy;
+use App\Policies\ReservationPolicy;
+use App\Policies\OrderPolicy;
+use App\Policies\ReportsPolicy;
+
+use App\Models\User;
+use App\Models\Dish;
+use App\Models\Reservation;
+use App\Models\Order;
+
 
 class AuthServiceProvider extends ServiceProvider
 {
@@ -22,7 +29,9 @@ class AuthServiceProvider extends ServiceProvider
     protected $policies = [
         Reservation::class => ReservationPolicy::class,
         Order::class => OrderPolicy::class,
-        User::class => UserPolicy::class
+        User::class => UserPolicy::class,
+        Dish::class => DishPolicy::class,
+        'reports' => ReportsPolicy::class,
     ];
 
     /**

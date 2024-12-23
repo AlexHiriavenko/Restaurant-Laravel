@@ -2,21 +2,20 @@
 
 namespace App\Http\Requests;
 
+use App\Models\Dish;
 use Illuminate\Foundation\Http\FormRequest;
+use Illuminate\Support\Facades\Auth;
 
 class UpdateDishRequest extends FormRequest
 {
-  /**
-   * Определите, авторизован ли пользователь для выполнения этого запроса.
-   */
   public function authorize(): bool
   {
-    return true;
+    /** @var User $user */
+    $user = Auth::user();
+
+    return $user->can('updateAny', Dish::class);
   }
 
-  /**
-   * Правила валидации для запроса.
-   */
   public function rules(): array
   {
     return [

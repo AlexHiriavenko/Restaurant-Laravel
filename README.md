@@ -26,7 +26,10 @@ version: Laravel v10.48.22 (PHP v8.2.25)
 -   docker-compose exec php php artisan migrate
 -   docker-compose exec php php artisan db:seed
 -   docker-compose exec php php artisan db:seed --class=RoleSeeder
--   docker-compose exec php php artisan db:seed --class=UserSeeder
+-   php artisan route:clear
+-   php artisan config:clear
+-   php artisan cache:clear
+-   composer dump-autoload
 
 ## Юзеры из бд
 

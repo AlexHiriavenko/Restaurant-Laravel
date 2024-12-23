@@ -45,7 +45,7 @@ class FileService implements FileServiceInterface
   /**
    * Обновление файла: удаляет старый и загружает новый.
    */
-  public function update(UploadedFile $file, ?string $oldPath, string $path): string
+  public function update(UploadedFile $file, string|null $oldPath, string $path): string
   {
     // Удаляем старый файл, если он существует
     if ($oldPath) {

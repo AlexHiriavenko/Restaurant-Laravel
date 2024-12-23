@@ -11,5 +11,5 @@ interface FileServiceInterface
   public function upload(UploadedFile $file, string $path = ''): string;
   public function delete(string $path): bool;
   public function getUrl(string $path): string;
-  public function update(UploadedFile $file, ?string $oldPath, string $path): string;
+  public function update(UploadedFile $file, string|null $oldPath, string $path): string;
 }

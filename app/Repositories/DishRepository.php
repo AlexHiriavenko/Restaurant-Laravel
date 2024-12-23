@@ -47,4 +47,9 @@ class DishRepository implements DishRepositoryInterface
 
     return $query->orderBy('id');
   }
+
+  public function create(array $data): Dish
+  {
+    return Dish::create($data);
+  }
 }
