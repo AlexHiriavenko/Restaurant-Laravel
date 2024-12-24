@@ -68,4 +68,20 @@ class AnalyticsController extends Controller
 
     return $pdf->download('reservations-analytics.pdf');
   }
+
+  public function sendMailWithPdfAttachment(Request $request)
+  {
+    $this->authorize('view', 'reports');
+
+    $startDate = $request->query('start_date', now()->startOfMonth()->toDateString());
+    $endDate = $request->query('end_date', now()->endOfMonth()->toDateString());
+    $email = $request->input('email', 'martmarchmartmarch@gmail.com');
+
+    $this->analyticsService->sendMailWithPdfAttachment($startDate, $endDate, $email);
+
+    return redirect()->route('analytics.sales', [
+      'start_date' => $startDate,
+      'end_date' => $endDate,
+    ])->with('success', 'status: successfully.');
+  }
 }

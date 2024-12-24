@@ -2,6 +2,20 @@
     <div class="container mx-auto px-4 pb-8 pt-4">
         <h1 class="text-2xl font-bold mb-4">Аналитика продаж</h1>
 
+        {{-- Сообщение об успехе --}}
+        @if (session('success'))
+            <div class="bg-green-100 text-green-700 border border-green-400 rounded px-4 py-3 mb-4">
+                {{ session('success') }}
+            </div>
+        @endif
+
+        {{-- Сообщение об ошибке --}}
+        @if (session('error'))
+            <div class="bg-red-100 text-red-700 border border-red-400 rounded px-4 py-3 mb-4">
+                {{ session('error') }}
+            </div>
+        @endif
+
         <div class="flex items-center justify-center gap-x-12">
             <form method="GET" action="{{ route('analytics.sales') }}" class="bg-gray-100 p-4 rounded-lg shadow mb-6">
                 <div class="flex gap-4 mb-4">
@@ -34,6 +48,23 @@
                         d="M4 16v1a2 2 0 002 2h12a2 2 0 002-2v-1m-4-4l-4 4m0 0l-4-4m4 4V4" />
                 </svg>
             </a>
+
+            <form method="POST" action="{{ route('analytics.sales.email') }}"
+                class="bg-gray-100 p-4 rounded-lg shadow mb-6">
+                @csrf
+                <div class="flex gap-4 mb-4">
+                    <div>
+                        <label for="email" class="block font-medium text-gray-700">Email:</label>
+                        <input type="email" id="email" name="email" required
+                            class="border-gray-300 focus:ring-blue-500 focus:border-blue-500 rounded-lg shadow-sm">
+                    </div>
+                </div>
+                <button type="submit"
+                    class="bg-blue-500 text-white font-semibold py-2 px-4 rounded-lg hover:bg-blue-600 transition">
+                    Отправить PDF на Email
+                </button>
+            </form>
+
         </div>
 
 

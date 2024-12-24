@@ -56,5 +56,7 @@ Route::middleware(['auth', 'role'])->group(function () {
         Route::get('/reservations', [AnalyticsController::class, 'reservations'])->name('analytics.reservations');
         Route::get('/sales/pdf', [AnalyticsController::class, 'downloadSalesAnalytics'])->name('analytics.sales.pdf');
         Route::get('/reservations/pdf', [AnalyticsController::class, 'downloadReservationsAnalytics'])->name('analytics.reservations.pdf');
+        Route::post('/sales/email', [AnalyticsController::class, 'sendMailWithPdfAttachment'])
+            ->name('analytics.sales.email');
     });
 });

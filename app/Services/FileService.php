@@ -55,4 +55,11 @@ class FileService implements FileServiceInterface
     // Загружаем новый файл
     return $this->upload($file, $path);
   }
+
+  public function uploadFromContent(string $content, string $path): string
+  {
+    Storage::disk($this->disk)->put($path, $content);
+
+    return storage_path('app/public/' . $path);  // "/var/www/storage/app/public/reports/sales-analytics.pdf"
+  }
 }

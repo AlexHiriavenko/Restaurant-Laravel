@@ -2,20 +2,26 @@
 
 namespace App\Services;
 
+use Barryvdh\DomPDF\Facade\Pdf;
 use App\Repositories\AnalyticsRepository;
 use Illuminate\Support\Collection;
 use App\Repositories\BookingRepository;
 use Carbon\Carbon;
+use Illuminate\Support\Facades\Auth;
+use App\Jobs\SendEmailSalesAnalytics;
+
 
 class AnalyticsService
 {
   protected AnalyticsRepository $analyticsRepository;
   protected BookingRepository $bookingRepository;
+  protected FileService $fileService;
 
-  public function __construct(AnalyticsRepository $analyticsRepository, BookingRepository $bookingRepository)
+  public function __construct(AnalyticsRepository $analyticsRepository, BookingRepository $bookingRepository, FileService $fileService)
   {
     $this->analyticsRepository = $analyticsRepository;
     $this->bookingRepository = $bookingRepository;
+    $this->fileService = $fileService;
   }
 
   /**
@@ -156,5 +162,37 @@ class AnalyticsService
       'byWeekday' => $this->reservationsByWeekday($startDate, $endDate),
       'byStartTime' => $this->reservationsByStartTime($startDate, $endDate),
     ];
+  }
+
+  public function sendMailWithPdfAttachment($startDate, $endDate, $email)
+  {
+    // Получение аналитики
+    $salesAnalytics = $this->getFullSalesAnalytics($startDate, $endDate);
+
+    // Генерация PDF
+    $pdf = Pdf::loadView('pdf.sales', compact('salesAnalytics', 'startDate', 'endDate'));
+
+    // Сохранение PDF
+    $filePath = 'reports/sales-analytics.pdf';
+    $storedFilePath = $this->fileService->uploadFromContent($pdf->output(), $filePath);
+
+    // Подготовка данных
+    $user = Auth::user();
+    $subject = 'Sales Analytics';
+    $template = 'emails.sales';
+    $data = [
+      'startDate' => $startDate,
+      'endDate' => $endDate,
+      'name' => $user->name,
+    ];
+
+    // Запуск Job
+    SendEmailSalesAnalytics::dispatch(
+      $email,
+      $subject,
+      $template,
+      $data,
+      [$storedFilePath]
+    );
   }
 }
