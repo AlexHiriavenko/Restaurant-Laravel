@@ -2,12 +2,10 @@
 
 use App\Http\Controllers\ProfileController;
 use Illuminate\Support\Facades\Route;
-use App\Http\Controllers\CategoryController;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\OrderController;
 use App\Http\Controllers\DishController;
 use App\Http\Controllers\AnalyticsController;
-use Barryvdh\DomPDF\Facade\Pdf;
 
 /*
 |--------------------------------------------------------------------------
@@ -20,12 +18,7 @@ use Barryvdh\DomPDF\Facade\Pdf;
 |
 */
 
-Route::get('/', function () {
-    return view('welcome');
-});
-
-Route::get('/categories', [CategoryController::class, 'index'])->name('categories.index');
-Route::get('/categories/{id}', [CategoryController::class, 'show'])->name('categories.show');
+Route::get('/', fn() => view('welcome'))->name('welcome');
 
 Route::middleware(['auth', 'role'])->group(function () {
     Route::get('/dashboard',  fn() => view('dashboard'))->name('dashboard');
@@ -61,10 +54,7 @@ Route::middleware(['auth', 'role'])->group(function () {
         Route::get('/', fn() => view('analytics.index'))->name('analytics');
         Route::get('/sales', [AnalyticsController::class, 'sales'])->name('analytics.sales');
         Route::get('/reservations', [AnalyticsController::class, 'reservations'])->name('analytics.reservations');
+        Route::get('/sales/pdf', [AnalyticsController::class, 'downloadSalesAnalytics'])->name('analytics.sales.pdf');
+        Route::get('/reservations/pdf', [AnalyticsController::class, 'downloadReservationsAnalytics'])->name('analytics.reservations.pdf');
     });
-});
-
-Route::get('/test-pdf', function () {
-    $pdf = PDF::loadHTML('<h1>Тестовая страница PDF</h1><p>Это тестовый файл PDF, созданный через dompdf.</p>');
-    return $pdf->stream('test.pdf');
 });
