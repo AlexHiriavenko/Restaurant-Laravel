@@ -11,18 +11,16 @@ use App\Models\Order;
 use App\Models\OrderItem;
 use App\Models\User;
 use App\Enums\OrderStatusEnum;
-use App\Services\MailService;
 use App\Jobs\SendEmailOrderReady;
+use App\Events\OrderStatusUpdated;
 
 class OrderService implements OrderServiceInterface
 {
     private $orderRepository;
-    private $mailService;
 
-    public function __construct(OrderRepository $orderRepository, MailService $mailService)
+    public function __construct(OrderRepository $orderRepository)
     {
         $this->orderRepository = $orderRepository;
-        $this->mailService = $mailService;
     }
 
     public function createOrder(array $data): Order
@@ -76,6 +74,9 @@ class OrderService implements OrderServiceInterface
 
         $this->orderRepository->update($orderId, ['status' => $status->value]);
 
+        // Запуск события
+        broadcast(new OrderStatusUpdated($orderId, $status->value));
+
         // Отправка email при завершении заказа
         if ($status->value === 'done') {
 
@@ -85,13 +86,6 @@ class OrderService implements OrderServiceInterface
             // $email = $user->email;
             $email = 'martmarchmartmarch@gmail.com';
             $userName = $user->name;
-
-            // $this->mailService->sendHtmlEmail(
-            //     $email,
-            //     $subject,
-            //     $template,
-            //     ['name' => $userName] // Данные для шаблона
-            // );
 
             SendEmailOrderReady::dispatch(
                 $email,

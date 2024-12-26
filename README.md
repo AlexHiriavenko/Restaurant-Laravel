@@ -30,6 +30,7 @@ version: Laravel v10.48.22 (PHP v8.2.25)
 -   docker-compose exec php php artisan config:clear
 -   docker-compose exec php php artisan cache:clear
 -   docker-compose exec php php artisan queue:work
+-   docker-compose exec php php artisan queue:restart
 -   composer dump-autoload
 
 ## Юзеры из бд
