@@ -6,6 +6,7 @@ use App\Http\Controllers\DishController;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\OrderController;
 use App\Http\Controllers\BookingController;
+use App\Http\Controllers\NotificationController;
 /*
 |--------------------------------------------------------------------------
 | API Routes
@@ -44,10 +45,18 @@ Route::middleware('auth:sanctum')->group(function () {
         Route::post('/store/user/{id?}', [BookingController::class, 'store'])->name('createReservation');
         Route::get('/active_reservations/user/{id?}', [BookingController::class, 'getUserActiveReservations'])->name('userActiveReservations');
         Route::delete('{id}', [BookingController::class, 'destroy'])->name('deleteReservation');
+        Route::get('/date', [BookingController::class, 'getReservationsByTableAndDate']);
     });
 
     Route::prefix('dishes')->group(function () {
         Route::post('/', [DishController::class, 'store'])->name('createDish');
         Route::put('{id}', [DishController::class, 'update'])->name('updateDish');
+    });
+
+    Route::prefix('notifications')->group(function () {
+        Route::get('/', [NotificationController::class, 'getUserNotifications']);
+        Route::patch('/{id}', [NotificationController::class, 'markAsRead']);
+        Route::delete('/{id}', [NotificationController::class, 'deleteNotification']);
+        Route::delete('/', [NotificationController::class, 'deleteAllUserNotifications']);
     });
 });

@@ -9,7 +9,7 @@ use App\Http\Requests\BookingStoreRequest;
 use App\Http\Resources\TableResource;
 use App\Http\Resources\ReservationResource;
 use App\Services\Interfaces\BookingServiceInterface;
-
+use Illuminate\Http\Request;
 
 class BookingController extends Controller
 {
@@ -97,5 +97,23 @@ class BookingController extends Controller
         }
 
         return response()->json(['message' => 'Не удалось удалить бронирование.'], 500);
+    }
+
+    public function getReservationsByTableAndDate(Request $request): JsonResponse
+    {
+        $validated = $request->validate([
+            'table_id' => 'required|integer|exists:tables,id',
+            'reservation_date' => 'required|date|date_format:Y-m-d',
+        ]);
+
+        $tableId = (int) $validated['table_id'];
+        $reservationDate = $validated['reservation_date'];
+
+        $reservations = $this->bookingService->getReservationsByTableAndDate($tableId, $reservationDate);
+
+        // Возвращаем JSON-ответ
+        return response()->json([
+            'reservations' => $reservations
+        ]);
     }
 }

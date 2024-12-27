@@ -13,10 +13,18 @@ use App\Models\User;
 use App\Enums\OrderStatusEnum;
 use App\Jobs\SendEmailOrderReady;
 use App\Events\OrderStatusUpdated;
+use App\Models\Notification;
+use Illuminate\Support\Facades\Auth;
 
 class OrderService implements OrderServiceInterface
 {
     private $orderRepository;
+
+    protected $statuses = [
+        'done' => 'виконано',
+        'in_progress' => 'готуєтся',
+        'rejected' => 'відмінено',
+    ];
 
     public function __construct(OrderRepository $orderRepository)
     {
@@ -58,6 +66,14 @@ class OrderService implements OrderServiceInterface
                 }
             }
 
+            $notification = Notification::create([
+                'user_id' => $order->user_id,
+                'text' => "Статус вашого замовлення id {$order->id} змінено на {$this->statuses[$order->status]}",
+                'was_read' => false,
+            ]);
+
+            broadcast(new OrderStatusUpdated($notification->text, $notification->id, $order->id, $order->status));
+
             return $order;
         });
     }
@@ -74,8 +90,14 @@ class OrderService implements OrderServiceInterface
 
         $this->orderRepository->update($orderId, ['status' => $status->value]);
 
+        $notification = Notification::create([
+            'user_id' => $order->user_id,
+            'text' => "Статус вашого замовлення id {$order->id} змінено на {$this->statuses[$status->value]}",
+            'was_read' => false,
+        ]);
+
         // Запуск события
-        broadcast(new OrderStatusUpdated($orderId, $status->value));
+        broadcast(new OrderStatusUpdated($notification->text, $notification->id, $order->id, $status->value));
 
         // Отправка email при завершении заказа
         if ($status->value === 'done') {

@@ -62,4 +62,9 @@ class BookingService implements BookingServiceInterface
   {
     return (bool) $reservation->delete();
   }
+
+  public function getReservationsByTableAndDate(int $tableId, string $reservationDate): Collection
+  {
+    return $this->bookingRepository->getReservationsByTableIdAndDate($tableId, $reservationDate);
+  }
 }

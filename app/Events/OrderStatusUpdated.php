@@ -11,18 +11,22 @@ class OrderStatusUpdated implements ShouldBroadcast
 {
     use InteractsWithSockets, SerializesModels;
 
-    public $orderId;
-    public $status;
+    public $notifyMessage;
+    public $id;
+    public $order_id;
+    public $order_status;
 
     /**
      * Create a new event instance.
      *
      * @return void
      */
-    public function __construct(int $orderId, string $status)
+    public function __construct(string $notifyMessage, int $id, int $order_id, string $order_status)
     {
-        $this->orderId = $orderId;
-        $this->status = $status;
+        $this->notifyMessage = $notifyMessage;
+        $this->id = $id;
+        $this->order_id = $order_id;
+        $this->order_status = $order_status;
     }
 
     /**

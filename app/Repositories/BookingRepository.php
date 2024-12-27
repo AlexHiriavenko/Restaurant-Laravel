@@ -70,4 +70,11 @@ class BookingRepository implements BookingRepositoryInterface
       Carbon::parse($endDate)->toDateString()
     ])->get();
   }
+
+  public function getReservationsByTableIdAndDate(int $tableId, string $reservationDate): Collection
+  {
+    return Reservation::where('table_id', $tableId)
+      ->where('reservation_date', $reservationDate)
+      ->get();
+  }
 }

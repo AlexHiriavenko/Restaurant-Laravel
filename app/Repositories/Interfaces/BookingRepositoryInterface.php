@@ -26,4 +26,6 @@ interface BookingRepositoryInterface
   public function findReservationById(int $id): ?Reservation;
 
   public function getReservationsByPeriod(string $startDate, string $endDate): Collection;
+
+  public function getReservationsByTableIdAndDate(int $tableId, string $reservationDate): Collection;
 }

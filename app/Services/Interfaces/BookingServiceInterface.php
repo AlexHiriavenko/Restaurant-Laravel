@@ -27,4 +27,6 @@ interface BookingServiceInterface
   public function findReservationById(int $id): ?Reservation;
 
   public function deleteReservation(Reservation $reservation): bool;
+
+  public function getReservationsByTableAndDate(int $tableId, string $reservationDate): Collection;
 }
