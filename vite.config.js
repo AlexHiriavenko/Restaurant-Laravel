@@ -18,6 +18,7 @@
 import { defineConfig } from "vite";
 import laravel from "laravel-vite-plugin";
 import fs from "fs";
+import os from "os";
 
 export default defineConfig({
     plugins: [
@@ -34,8 +35,37 @@ export default defineConfig({
             cert: fs.readFileSync("./docker/nginx/nginx.crt"),
         },
         hmr: {
-            host: "172.18.38.59", // Укажи доступный сетевой адрес
+            host: getLocalIP(), // Используем тот же IP для HMR
             protocol: "wss", // Используем WebSocket через HTTPS
         },
     },
 });
+
+// Функция для получения локального IP-адреса
+function getLocalIP() {
+    const interfaces = os.networkInterfaces();
+
+    let fallbackIP = "localhost"; // По умолчанию localhost
+    let prioritizedIP = null;
+
+    for (const name of Object.keys(interfaces)) {
+        for (const iface of interfaces[name]) {
+            if (iface.family === "IPv4" && !iface.internal) {
+                const address = iface.address;
+
+                // Приоритетный адрес: 192.168.*.*
+                if (address.startsWith("192.168.")) {
+                    prioritizedIP = address;
+                }
+
+                // Резервный адрес: 172.*.*.*
+                if (!prioritizedIP && address.startsWith("172.")) {
+                    fallbackIP = address;
+                }
+            }
+        }
+    }
+
+    // Возвращаем приоритетный IP, если он найден, иначе резервный
+    return prioritizedIP || fallbackIP || "localhost";
+}

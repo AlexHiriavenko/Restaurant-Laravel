@@ -51,5 +51,3 @@
         </div>
     </form>
 </x-guest-layout>
-
-{{ dd(session()->all()) }}

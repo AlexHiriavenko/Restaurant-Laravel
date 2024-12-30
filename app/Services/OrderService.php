@@ -100,22 +100,22 @@ class OrderService implements OrderServiceInterface
         broadcast(new OrderStatusUpdated($notification->text, $notification->id, $order->id, $status->value));
 
         // Отправка email при завершении заказа
-        if ($status->value === 'done') {
+        // if ($status->value === 'done') {
 
-            $subject = 'Order Completed!';
-            $template = 'emails.orderComplete';
-            $user = User::findOrFail($order->user_id);
-            // $email = $user->email;
-            $email = 'martmarchmartmarch@gmail.com';
-            $userName = $user->name;
+        //     $subject = 'Order Completed!';
+        //     $template = 'emails.orderComplete';
+        //     $user = User::findOrFail($order->user_id);
+        //     // $email = $user->email;
+        //     $email = 'martmarchmartmarch@gmail.com';
+        //     $userName = $user->name;
 
-            SendEmailOrderReady::dispatch(
-                $email,
-                $subject,
-                $template,
-                ['name' => $userName]
-            );
-        }
+        //     SendEmailOrderReady::dispatch(
+        //         $email,
+        //         $subject,
+        //         $template,
+        //         ['name' => $userName]
+        //     );
+        // }
     }
 
     public function getOrders(?OrderStatusEnum $status, ?string $startDate, ?string $endDate, int $perPage = 5): LengthAwarePaginator
