@@ -2,6 +2,11 @@
 
 version: Laravel v10.48.22 (PHP v8.2.25)
 
+## Project URLs:
+
+-   клиентская часть: https://alexhiriavenko.github.io/Restaurant-Vue/
+-   админ панель:https://restaurant-laravel-production.up.railway.app/
+
 ## Описание
 
 -   Тема: Платформа для автоматизации ресторана
